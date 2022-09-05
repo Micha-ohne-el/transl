@@ -1,5 +1,6 @@
 package deepl
 
+import Config
 import deepl.models.Translation
 import deepl.models.TranslationResponse
 import io.ktor.client.*
@@ -44,7 +45,7 @@ class DeepLClient(
     private val client = HttpClient {
         install(Logging)
         install(UserAgent) {
-            agent = "TransL Discord Bot/0.0.0"
+            agent = "TransL Discord Bot/${Config.version}"
         }
         install(DefaultRequest) {
             url(baseUrl)
