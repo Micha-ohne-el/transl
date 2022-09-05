@@ -9,7 +9,10 @@ object Translate : Command() {
     override val name = "translate"
     override val description = "Translate a message to the chat!"
 
-    private val targetLang by StringParam("The language you want to translate to.")
+    private val targetLang by StringParam(
+        "The language you want to translate to",
+        TargetLang.values().slice(0..24).map(TargetLang::name)
+    )
 
     private val message by StringParam("The message you want to translate.")
 
