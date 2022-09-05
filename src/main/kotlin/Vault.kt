@@ -1,6 +1,4 @@
-import io.github.cdimascio.dotenv.Dotenv
 import io.github.cdimascio.dotenv.dotenv
-import java.math.BigInteger
 
 object Vault {
     val discordBotToken = dotenv.get("TRANSL_DISCORD_BOT_TOKEN") ?: throw EnvError("TRANSL_DISCORD_BOT_TOKEN")

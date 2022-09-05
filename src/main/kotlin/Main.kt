@@ -29,11 +29,14 @@ private suspend fun Kord.registerCommandsGlobally() {
         val discordCommand = createGlobalChatInputCommand(
             command.name,
             command.description
-        )
+        ) {
+            options = command.params.map {it.option}.toMutableList()
+        }
 
         on<GlobalChatInputCommandInteractionCreateEvent> {
             if (interaction.invokedCommandId == discordCommand.id) {
-                command.execute(interaction)
+                command.interaction = interaction
+                command.execute()
             }
         }
     }
@@ -45,11 +48,14 @@ private suspend fun Kord.registerCommandsForGuild(guildId: Long) {
             Snowflake(guildId),
             command.name,
             command.description
-        )
+        ) {
+            options = command.params.map {it.option}.toMutableList()
+        }
 
         on<GuildChatInputCommandInteractionCreateEvent> {
             if (interaction.invokedCommandId == discordCommand.id) {
-                command.execute(interaction)
+                command.interaction = interaction
+                command.execute()
             }
         }
     }
