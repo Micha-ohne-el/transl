@@ -103,6 +103,18 @@ abstract class Command {
                 }
             }
         }
+
+        inner class Optional : OptionalParam<String>() {
+            override val option: OptionsBuilder
+            get() = StringChoiceBuilder(name, description).apply {
+                required = false
+
+                if (allowedChoices != null) {
+                    for (c in allowedChoices) {
+                        choice(c, c)
+                    }
+                }
+            }
         }
     }
 }

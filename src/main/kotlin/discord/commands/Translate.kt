@@ -1,6 +1,7 @@
 package discord.commands
 
 import deepl.DeepLClient
+import deepl.SourceLang
 import deepl.TargetLang
 import dev.kord.core.behavior.interaction.response.respond
 import discord.Command
@@ -16,11 +17,16 @@ object Translate : Command() {
 
     private val message by StringParam("The message you want to translate.")
 
+    private val sourceLang by StringParam("Your language").Optional()
+
     override suspend fun execute() {
         val behavior = interaction.deferPublicResponse()
 
         behavior.respond {
-            content = deepl.translate(message, TargetLang.valueOf(targetLang))
+            if (sourceLang != null)
+                content = deepl.translate(message, TargetLang.valueOf(targetLang), SourceLang.valueOf(sourceLang!!))
+            else
+                content = deepl.translate(message, TargetLang.valueOf(targetLang))
         }
     }
 
