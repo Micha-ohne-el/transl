@@ -1,7 +1,6 @@
 package discord.commands
 
-import deepl.DeepLClient
-import deepl.SourceLang
+import deepl.DeeplClient
 import deepl.TargetLang
 import dev.kord.core.behavior.interaction.response.respond
 import discord.Command
@@ -23,5 +22,5 @@ object Translate : Command() {
     }
 
 
-    private val deepl = DeepLClient(Vault.deeplAuthKey)
+    private val deepl = DeeplClient(Vault.deeplAuthKey)
 }

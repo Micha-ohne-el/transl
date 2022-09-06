@@ -13,7 +13,7 @@ import io.ktor.client.request.forms.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 
-class DeepLClient(
+class DeeplClient(
     private val authKey: String
 ) {
     suspend fun translate(text: String, targetLang: TargetLang, sourceLang: SourceLang? = null): String {
