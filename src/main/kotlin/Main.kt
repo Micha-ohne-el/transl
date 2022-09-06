@@ -4,7 +4,6 @@ import dev.kord.core.event.interaction.GlobalChatInputCommandInteractionCreateEv
 import dev.kord.core.event.interaction.GuildChatInputCommandInteractionCreateEvent
 import dev.kord.core.on
 import discord.Command
-import discord.commands.Ping
 import discord.commands.Translate
 
 suspend fun main() {
@@ -22,7 +21,7 @@ suspend fun main() {
 }
 
 
-private val commands: List<Command> = listOf(Ping, Translate)
+private val commands: List<Command> = listOf(Translate)
 
 private suspend fun Kord.registerCommandsGlobally() {
     for (command in commands) {
