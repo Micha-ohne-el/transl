@@ -4,6 +4,7 @@ import deepl.DeeplClient
 import deepl.TargetLang
 import dev.kord.core.behavior.interaction.response.respond
 import discord.Command
+import discord.params.StringParam
 
 object Translate : Command() {
     override val name = "translate"
