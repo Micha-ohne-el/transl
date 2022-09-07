@@ -3,10 +3,10 @@ package discord.commands
 import deepl.DeeplClient
 import deepl.TargetLang
 import dev.kord.core.behavior.interaction.response.respond
-import discord.Command
+import discord.ChatInputCommand
 import discord.params.StringParam
 
-object Translate : Command() {
+object Translate : ChatInputCommand() {
     override val name = "translate"
     override val description = "Translate a message to the chat!"
 
