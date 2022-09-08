@@ -12,7 +12,7 @@ class StringParam(
         required = true
 
         if (allowedChoices != null) {
-            for (c in allowedChoices) {
+            for (c in allowedChoices.subList(0, 24)) { // Discord limits the amount of choices to 25.
                 choice(c, c)
             }
         }
