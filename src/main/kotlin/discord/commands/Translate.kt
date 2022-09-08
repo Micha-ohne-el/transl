@@ -1,8 +1,8 @@
 package discord.commands
 
+import GuildLangRepo
 import Vault
 import deepl.DeeplClient
-import deepl.TargetLang
 import dev.kord.core.behavior.interaction.response.respond
 import discord.ChatInputCommand
 import discord.params.StringParam
@@ -15,7 +15,12 @@ object Translate : ChatInputCommand() {
     private val message by StringParam("The message you want to translate.")
 
     override suspend fun execute() {
-        val guildLang = interaction.guildLocale?.toTargetLang() ?: TargetLang.BritishEnglish
+        val guildIdSnowflake = interaction.data.guildId.value
+        val guildId = guildIdSnowflake?.value?.toLong()
+
+        val guildLang = (if (guildId != null) GuildLangRepo.getGuildLang(guildId) else null)
+            ?: interaction.guildLocale?.toTargetLang()
+            ?: GuildLangRepo.defaultGuildLang
 
         val behavior = interaction.deferPublicResponse()
 
