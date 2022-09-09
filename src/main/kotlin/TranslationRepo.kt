@@ -17,7 +17,13 @@ object TranslationRepo {
         val sourceLang: SourceLang?
     )
 
-    private val cache = mutableMapOf<Request, String>()
+    private val cache = object : LinkedHashMap<Request, String>() {
+        val limit = Vault.translationCacheSize
+
+        override fun removeEldestEntry(eldest: MutableMap.MutableEntry<Request, String>?): Boolean {
+            return size >= limit
+        }
+    }
 
     private val deepl = DeeplClient(Vault.deeplAuthKey)
 }
