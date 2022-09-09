@@ -12,11 +12,11 @@ object TranslateMessage : MessageCommand() {
     override val description = "Translate a previously sent message!"
 
     override suspend fun execute() {
-        val guildIdSnowflake = Translate.interaction.data.guildId.value
+        val guildIdSnowflake = interaction.data.guildId.value
         val guildId = guildIdSnowflake?.value?.toLong()
 
         val guildLang = (if (guildId != null) GuildLangRepo.getGuildLang(guildId) else null)
-            ?: Translate.interaction.guildLocale?.toTargetLang()
+            ?: interaction.guildLocale?.toTargetLang()
             ?: GuildLangRepo.defaultGuildLang
 
         val behavior = interaction.deferEphemeralResponse()
