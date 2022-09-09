@@ -16,7 +16,7 @@ object SetGuildLang : ChatInputCommand() {
         TargetLang.values().map(TargetLang::name)
     )
 
-    private val lang by lazy {enumValueOfOrNull<TargetLang>(langName)}
+    private val lang get() = enumValueOfOrNull<TargetLang>(langName)
 
     override suspend fun execute() {
         val behavior = interaction.deferEphemeralResponse()

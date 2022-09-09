@@ -26,8 +26,12 @@ object GuildLangRepo {
     fun setGuildLang(guildId: Long, lang: TargetLang): Unit = transaction(db) {
         addLogger(StdOutSqlLogger)
 
-        GuildLang.new(guildId) {
-            this.lang = lang
+        val existingGuildLang = GuildLang.findById(guildId)
+
+        if (existingGuildLang == null) {
+            GuildLang.new(guildId) {this.lang = lang}
+        } else {
+            existingGuildLang.lang = lang
         }
     }
 
