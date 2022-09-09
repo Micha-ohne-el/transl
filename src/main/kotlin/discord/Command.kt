@@ -1,5 +1,6 @@
 package discord
 
+import dev.kord.common.entity.Permission
 import dev.kord.core.Kord
 import dev.kord.core.entity.application.GlobalApplicationCommand
 import dev.kord.core.entity.application.GuildApplicationCommand
@@ -16,6 +17,8 @@ abstract class Command<Interaction : ApplicationCommandInteraction> {
     abstract suspend fun makeGuildCommand(kord: Kord, guildId: Long): GuildApplicationCommand
 
     val params = mutableListOf<Param<*>>()
+
+    open val permissions = setOf<Permission>(Permission.UseApplicationCommands)
 
     lateinit var interaction: Interaction
 }
