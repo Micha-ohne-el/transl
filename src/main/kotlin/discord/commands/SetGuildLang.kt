@@ -2,6 +2,7 @@ package discord.commands
 
 import GuildLangRepo
 import deepl.TargetLang
+import dev.kord.common.entity.Permission
 import dev.kord.core.behavior.interaction.response.respond
 import discord.ChatInputCommand
 import discord.params.StringParam
@@ -10,6 +11,8 @@ import util.enumValueOfOrNull
 object SetGuildLang : ChatInputCommand() {
     override val name = "lang"
     override val description = "Set this Server's preferred language."
+
+    override val permissions = setOf(Permission.ManageGuild)
 
     private val langName by StringParam(
         "The language people should talk in.",
