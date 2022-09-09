@@ -1,8 +1,7 @@
 package discord.commands
 
 import GuildLangRepo
-import Vault
-import deepl.DeeplClient
+import TranslationRepo
 import dev.kord.core.behavior.interaction.response.respond
 import discord.MessageCommand
 import discord.toTargetLang
@@ -22,10 +21,7 @@ object TranslateMessage : MessageCommand() {
         val behavior = interaction.deferEphemeralResponse()
 
         behavior.respond {
-            content = deepl.translate(interaction.messages.values.first().content, guildLang)
+            content = TranslationRepo.translate(interaction.messages.values.first().content, guildLang)
         }
     }
-
-
-    private val deepl = DeeplClient(Vault.deeplAuthKey)
 }

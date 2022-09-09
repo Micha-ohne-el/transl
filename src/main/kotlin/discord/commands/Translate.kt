@@ -1,8 +1,7 @@
 package discord.commands
 
 import GuildLangRepo
-import Vault
-import deepl.DeeplClient
+import TranslationRepo
 import dev.kord.core.behavior.interaction.response.respond
 import discord.ChatInputCommand
 import discord.params.StringParam
@@ -25,10 +24,10 @@ object Translate : ChatInputCommand() {
         val behavior = interaction.deferPublicResponse()
 
         behavior.respond {
-            content = deepl.translate(message, guildLang)
+            content = TranslationRepo.translate(message, guildLang)
         }
     }
 
 
-    private val deepl = DeeplClient(Vault.deeplAuthKey)
+
 }
