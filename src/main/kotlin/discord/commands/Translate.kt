@@ -27,7 +27,4 @@ object Translate : ChatInputCommand() {
             content = TranslationRepo.translate(message, guildLang)
         }
     }
-
-
-
 }
