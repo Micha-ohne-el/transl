@@ -26,6 +26,10 @@ object GuildLangRepo {
     fun setGuildLang(guildId: Long, lang: TargetLang): Unit = transaction(db) {
         addLogger(StdOutSqlLogger)
 
+        if (lang == defaultGuildLang) {
+            return@transaction clearGuildLang(guildId)
+        }
+
         val existingGuildLang = GuildLang.findById(guildId)
 
         if (existingGuildLang == null) {
@@ -35,7 +39,7 @@ object GuildLangRepo {
         }
     }
 
-    fun clearGuildLang(guildId: Long): Unit = transaction(db) {
+    private fun clearGuildLang(guildId: Long): Unit = transaction(db) {
         addLogger(StdOutSqlLogger)
 
         GuildLang.findById(guildId)?.delete()
