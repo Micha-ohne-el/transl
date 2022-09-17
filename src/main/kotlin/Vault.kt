@@ -12,7 +12,7 @@ object Vault {
     val dbUsername = dotenv.get("TRANSL_DB_USERNAME") ?: throw EnvError("TRANSL_DB_USERNAME")
     val dbPassword = dotenv.get("TRANSL_DB_PASSWORD") ?: throw EnvError("TRANSL_DB_PASSWORD")
 
-    val translationCacheSize = dotenv.get("TRANSL_CACHE_SIZE")?.toLongOrNull() ?: 10000
+    val translationCacheSize = dotenv.get("TRANSL_CACHE_SIZE")?.toIntOrNull() ?: 10000
 }
 
 class EnvError(name: String) : Error("Variable '$name' could not be loaded.")
