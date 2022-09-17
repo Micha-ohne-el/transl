@@ -9,7 +9,7 @@ import discord.params.StringParam
 import util.enumValueOfOrNull
 
 object SetGuildLang : ChatInputCommand() {
-    override val name = "lang"
+    override val name = "setLang"
     override val description = "Set this Server's preferred language."
 
     override val permissions = setOf(Permission.ManageGuild)

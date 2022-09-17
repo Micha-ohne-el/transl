@@ -1,12 +1,10 @@
 package discord
 
+import commands
 import dev.kord.core.Kord
 import dev.kord.core.entity.application.ApplicationCommand
 import dev.kord.core.entity.interaction.ApplicationCommandInteraction
 import dev.kord.core.event.interaction.ApplicationCommandInteractionCreateEvent
-import discord.commands.SetGuildLang
-import discord.commands.Translate
-import discord.commands.TranslateMessage
 
 suspend fun registerCommandsGlobally(kord: Kord) {
     for (command in commands) {
@@ -36,7 +34,5 @@ suspend fun executeCommand(event: ApplicationCommandInteractionCreateEvent) {
     command?.execute()
 }
 
-
-private val commands: List<Command<out ApplicationCommandInteraction>> = listOf(Translate, TranslateMessage, SetGuildLang)
 
 private val registeredCommands = mutableMapOf<ApplicationCommand, Command<out ApplicationCommandInteraction>>()

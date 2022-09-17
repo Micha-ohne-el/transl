@@ -1,5 +1,11 @@
 import dev.kord.core.Kord
+import dev.kord.core.entity.interaction.ApplicationCommandInteraction
 import dev.kord.core.on
+import discord.Command
+import discord.commands.GetGuildLang
+import discord.commands.SetGuildLang
+import discord.commands.Translate
+import discord.commands.TranslateMessage
 import discord.executeCommand
 import discord.registerCommandsForGuild
 import discord.registerCommandsGlobally
@@ -19,3 +25,10 @@ suspend fun main() {
 
     kord.login()
 }
+
+val commands: List<Command<out ApplicationCommandInteraction>> = listOf(
+    Translate,
+    TranslateMessage,
+    GetGuildLang,
+    SetGuildLang
+)
