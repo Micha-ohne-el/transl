@@ -9,7 +9,6 @@ import discord.params.base.Param
 
 abstract class Command<Interaction : ApplicationCommandInteraction> {
     abstract val name: String
-    abstract val description: String
 
     abstract suspend fun execute()
 

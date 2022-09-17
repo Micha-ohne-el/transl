@@ -6,6 +6,8 @@ import dev.kord.core.Kord
 import dev.kord.core.entity.interaction.ChatInputCommandInteraction
 
 abstract class ChatInputCommand : Command<ChatInputCommandInteraction>() {
+    abstract val description: String
+
     override suspend fun makeGlobalCommand(kord: Kord) = kord.createGlobalChatInputCommand(
         name,
         description

@@ -8,7 +8,6 @@ import discord.toTargetLang
 
 object TranslateMessage : MessageCommand() {
     override val name = "translate"
-    override val description = "Translate a previously sent message!"
 
     override suspend fun execute() {
         val behavior = interaction.deferEphemeralResponse()
