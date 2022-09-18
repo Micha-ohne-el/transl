@@ -13,8 +13,8 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.Op
 import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.Slf4jSqlDebugLogger
 import org.jetbrains.exposed.sql.SortOrder
-import org.jetbrains.exposed.sql.StdOutSqlLogger
 import org.jetbrains.exposed.sql.addLogger
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -31,7 +31,7 @@ object TranslationRepo {
 
 
     private fun getCachedTranslation(text: String, targetLang: TargetLang, sourceLang: SourceLang?) = transaction(db) {
-        addLogger(StdOutSqlLogger)
+        addLogger(Slf4jSqlDebugLogger)
 
         Translation.find {
             (Translations.sourceText eq text) and
@@ -46,7 +46,7 @@ object TranslationRepo {
         sourceLang: SourceLang?,
         translatedText: String
     ): Unit = transaction(db) {
-        addLogger(StdOutSqlLogger)
+        addLogger(Slf4jSqlDebugLogger)
 
         Translation.new {
             this.sourceText = sourceText
@@ -59,7 +59,7 @@ object TranslationRepo {
     }
 
     private fun capCache(): Unit = transaction(db) {
-        addLogger(StdOutSqlLogger)
+        addLogger(Slf4jSqlDebugLogger)
 
         val cacheSize = Translation.count(Op.TRUE)
         val amountToRemove = maxOf(cacheSize - translationCacheSize, 0)
@@ -82,7 +82,7 @@ object TranslationRepo {
 
     init {
         transaction(db) {
-            addLogger(StdOutSqlLogger)
+            addLogger(Slf4jSqlDebugLogger)
 
             SchemaUtils.create(Translations)
         }

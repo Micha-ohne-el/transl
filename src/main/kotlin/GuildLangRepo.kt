@@ -10,13 +10,13 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.LongIdTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.StdOutSqlLogger
+import org.jetbrains.exposed.sql.Slf4jSqlDebugLogger
 import org.jetbrains.exposed.sql.addLogger
 import org.jetbrains.exposed.sql.transactions.transaction
 
 object GuildLangRepo {
     fun getGuildLang(guildId: Long): TargetLang? = transaction(db) {
-        addLogger(StdOutSqlLogger)
+        addLogger(Slf4jSqlDebugLogger)
 
         val guildLang = GuildLang.findById(guildId)
 
@@ -24,7 +24,7 @@ object GuildLangRepo {
     }
 
     fun setGuildLang(guildId: Long, lang: TargetLang): Unit = transaction(db) {
-        addLogger(StdOutSqlLogger)
+        addLogger(Slf4jSqlDebugLogger)
 
         if (lang == defaultGuildLang) {
             return@transaction clearGuildLang(guildId)
@@ -40,7 +40,7 @@ object GuildLangRepo {
     }
 
     private fun clearGuildLang(guildId: Long): Unit = transaction(db) {
-        addLogger(StdOutSqlLogger)
+        addLogger(Slf4jSqlDebugLogger)
 
         GuildLang.findById(guildId)?.delete()
     }
@@ -56,7 +56,7 @@ object GuildLangRepo {
 
     init {
         transaction(db) {
-            addLogger(StdOutSqlLogger)
+            addLogger(Slf4jSqlDebugLogger)
 
             SchemaUtils.create(GuildLangs)
         }
