@@ -8,7 +8,7 @@ import discord.params.StringParam
 import discord.toTargetLang
 
 object Translate : ChatInputCommand() {
-    override val name = "translate"
+    override val name = "Translate"
     override val description = "Translate a message to the chat!"
 
     private val message by StringParam("The message you want to translate.")

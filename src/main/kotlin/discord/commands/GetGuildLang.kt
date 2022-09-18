@@ -5,7 +5,7 @@ import dev.kord.core.behavior.interaction.response.respond
 import discord.ChatInputCommand
 
 object GetGuildLang : ChatInputCommand() {
-    override val name = "getLang"
+    override val name = "Get language"
     override val description = "Get this Server's preferred language."
 
     override suspend fun execute() {
