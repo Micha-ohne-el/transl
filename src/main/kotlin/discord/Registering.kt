@@ -5,20 +5,49 @@ import dev.kord.core.Kord
 import dev.kord.core.entity.application.ApplicationCommand
 import dev.kord.core.entity.interaction.ApplicationCommandInteraction
 import dev.kord.core.event.interaction.ApplicationCommandInteractionCreateEvent
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import util.infoTime
+
+val log: Logger = LoggerFactory.getLogger("Registering")
 
 suspend fun registerCommandsGlobally(kord: Kord) {
-    for (command in commands) {
-        val discordCommand = command.makeGlobalCommand(kord)
+    log.infoTime(
+        "Registering all commands globally...",
+        "Successfully registered all commands globally."
+    ) {
+        for (command in commands) {
+            log.infoTime(
+                "Registering '${command.name}' globally...",
+                "Successfully registered '${command.name}' globally."
+            ) {
+                val discordCommand = command.makeGlobalCommand(kord)
 
-        registeredCommands[discordCommand] = command
+                registeredCommands[discordCommand] = command
+
+                log.info("Finished registering '${command.name}' globally.")
+            }
+        }
     }
 }
 
 suspend fun registerCommandsForGuild(kord: Kord, guildId: Long) {
-    for (command in commands) {
-        val discordCommand = command.makeGuildCommand(kord, guildId)
+    log.infoTime(
+        "Registering all commands for guild $guildId...",
+        "Successfully registered all commands for guild $guildId."
+    ) {
+        for (command in commands) {
+            log.infoTime(
+                "Registering '${command.name}' for guild $guildId...",
+                "Successfully registered '${command.name}' for guild $guildId."
+            ) {
+                val discordCommand = command.makeGuildCommand(kord, guildId)
 
-        registeredCommands[discordCommand] = command
+                registeredCommands[discordCommand] = command
+
+                log.info("Finished registering '${command.name}' for guild $guildId.")
+            }
+        }
     }
 }
 
