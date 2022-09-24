@@ -10,7 +10,7 @@ fun String.toPascalCase() = splitWords(this).joinToPascalCase()
 
 
 private fun splitWords(text: String): List<String> {
-    return text.split(Regex("""\s+|_|-|(?<!^)(?=[A-Z])""")).map(String::lowercase)
+    return text.split(Regex("""\s+|_|-|(?<!^|\s|_|-)(?=[A-Z])""")).map(String::lowercase)
 }
 
 private fun List<String>.joinToSnakeCase() = joinToString("_")

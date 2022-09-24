@@ -67,7 +67,8 @@ class CasingTest : DescribeSpec() {
                 "this_is_a_test",
                 "this-is-a-test",
                 "thisIsATest",
-                "ThisIsATest"
+                "ThisIsATest",
+                "This Is A Test"
             ) {
                 this@context.describe("toSnakeCase") {
                     it("returns 'this_is_a_test'") {
