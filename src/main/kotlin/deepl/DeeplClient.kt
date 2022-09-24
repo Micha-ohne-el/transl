@@ -3,6 +3,7 @@ package deepl
 import Config
 import deepl.models.Translation
 import deepl.models.TranslationResponse
+import dev.kord.rest.request.KtorRequestException
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
@@ -22,21 +23,32 @@ class DeeplClient(
     suspend fun translate(text: String, targetLang: TargetLang, sourceLang: SourceLang? = null): String {
         log.info("Translating from $sourceLang to $targetLang: ${text.quote()}")
 
-        val response = client.submitForm(
-            url = "v2/translate",
-            formParameters = Parameters.build {
-                append("text", text)
-                append("target_lang", targetLang.code)
+        try {
+             val response = client.submitForm(
+                url = "v2/translate",
+                formParameters = Parameters.build {
+                    append("text", text)
+                    append("target_lang", targetLang.code)
 
-                if (sourceLang != null) {
-                    append("source_lang", sourceLang.code)
+                    if (sourceLang != null) {
+                        append("source_lang", sourceLang.code)
+                    }
                 }
+            )
+
+            val translations: TranslationResponse = response.body()
+
+            return translations.map(Translation::text).joinToString()
+        } catch (error: Throwable) {
+            if (error is KtorRequestException && error.status.code == 456) { // source: https://www.deepl.com/docs-api/api-access/error-handling/
+                log.error("DeepL quota exceeded for this month!!!")
+            } else {
+                log.error("An unexpected error occurred during translation.")
+                log.error(error.stackTraceToString())
             }
-        )
 
-        val translations: TranslationResponse = response.body()
-
-        return translations.map(Translation::text).joinToString()
+            throw error
+        }
     }
 
     private val isFree = authKey.endsWith(":fx")
