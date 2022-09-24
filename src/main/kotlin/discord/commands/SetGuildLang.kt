@@ -17,12 +17,12 @@ object SetGuildLang : ChatInputCommand() {
 
     override val permissions = setOf(Permission.ManageGuild)
 
-    private val langName by StringParam(
+    private val language by StringParam(
         "The language people should talk in.",
         TargetLang.values().map(TargetLang::name)
     )
 
-    private val lang get() = enumValueOfOrNull<TargetLang>(langName)
+    private val lang get() = enumValueOfOrNull<TargetLang>(language)
 
     override suspend fun execute() {
         val behavior = interaction.deferEphemeralResponse()
@@ -32,7 +32,7 @@ object SetGuildLang : ChatInputCommand() {
         if (lang == null) {
             behavior.respond {
                 content = TranslationRepo.translate(
-                    "Language $langName is not (yet) supported, unfortunately.",
+                    "Language “$language” is not (yet) supported, unfortunately.",
                     GuildLangRepo.getGuildLangOrDefault(guildId),
                     SourceLang.English
                 )
