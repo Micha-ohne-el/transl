@@ -7,16 +7,21 @@ import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
+val log: Logger = LoggerFactory.getLogger("DeepL")
 
 class DeeplClient(
     private val authKey: String
 ) {
     suspend fun translate(text: String, targetLang: TargetLang, sourceLang: SourceLang? = null): String {
+        log.info("Translating from $targetLang to $sourceLang: ${text.quote()}")
+
         val response = client.submitForm(
             url = "v2/translate",
             formParameters = Parameters.build {
@@ -43,7 +48,6 @@ class DeeplClient(
     }
 
     private val client = HttpClient {
-        install(Logging)
         install(UserAgent) {
             agent = "TransL Discord Bot/${Config.version}"
         }
