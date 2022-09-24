@@ -61,5 +61,12 @@ class DeeplClient(
         install(ContentNegotiation) {
             json()
         }
+        install(HttpRequestRetry) {
+            maxRetries = 4
+            exponentialDelay()
+            retryIf { _, response ->
+                response.status == HttpStatusCode.TooManyRequests
+            }
+        }
     }
 }
