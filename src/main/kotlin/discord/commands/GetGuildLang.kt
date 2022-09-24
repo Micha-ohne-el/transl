@@ -1,6 +1,8 @@
 package discord.commands
 
 import GuildLangRepo
+import TranslationRepo
+import deepl.SourceLang
 import dev.kord.core.behavior.interaction.response.respond
 import discord.ChatInputCommand
 import util.toLong
@@ -17,7 +19,11 @@ object GetGuildLang : ChatInputCommand() {
         val currentLang = GuildLangRepo.getGuildLangOrDefault(guildId)
 
         behavior.respond {
-            content = "The current server language is set to $currentLang."
+            content = TranslationRepo.translate(
+                "The current server language is set to $currentLang.",
+                GuildLangRepo.getGuildLangOrDefault(guildId),
+                SourceLang.English
+            )
         }
     }
 }

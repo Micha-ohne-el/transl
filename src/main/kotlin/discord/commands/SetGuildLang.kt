@@ -1,6 +1,8 @@
 package discord.commands
 
 import GuildLangRepo
+import TranslationRepo
+import deepl.SourceLang
 import deepl.TargetLang
 import dev.kord.common.entity.Permission
 import dev.kord.core.behavior.interaction.response.respond
@@ -29,7 +31,11 @@ object SetGuildLang : ChatInputCommand() {
 
         if (lang == null) {
             behavior.respond {
-                content = "Language $langName is not (yet) supported, unfortunately."
+                content = TranslationRepo.translate(
+                    "Language $langName is not (yet) supported, unfortunately.",
+                    GuildLangRepo.getGuildLangOrDefault(guildId),
+                    SourceLang.English
+                )
             }
             return
         }
@@ -37,7 +43,11 @@ object SetGuildLang : ChatInputCommand() {
         GuildLangRepo.setGuildLang(guildId, lang!!)
 
         behavior.respond {
-            content = "Language set to $lang."
+            content = TranslationRepo.translate(
+                "The server language has been set to '$lang'.",
+                GuildLangRepo.getGuildLangOrDefault(guildId),
+                SourceLang.English
+            )
         }
     }
 }
