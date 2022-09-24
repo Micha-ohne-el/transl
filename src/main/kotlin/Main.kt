@@ -5,6 +5,7 @@ import discord.Command
 import discord.commands.GetGuildLang
 import discord.commands.SetGuildLang
 import discord.commands.Translate
+import discord.commands.TranslateFrom
 import discord.commands.TranslateMessage
 import discord.executeCommand
 import discord.registerCommandsForGuild
@@ -30,5 +31,6 @@ val commands: List<Command<out ApplicationCommandInteraction>> = listOf(
     Translate,
     TranslateMessage,
     GetGuildLang,
-    SetGuildLang
+    SetGuildLang,
+    TranslateFrom
 )
