@@ -62,4 +62,37 @@ enum class TargetLang(
     Swedish("SV"),
     Turkish("TR"),
     Chinese("ZH");
+
+    fun toSourceLang(): SourceLang {
+        return when (this) {
+            Bulgarian -> SourceLang.Bulgarian
+            Czech -> SourceLang.Czech
+            Danish -> SourceLang.Danish
+            German -> SourceLang.German
+            Greek -> SourceLang.Greek
+            BritishEnglish -> SourceLang.English
+            AmericanEnglish -> SourceLang.English
+            Spanish -> SourceLang.Spanish
+            Estonian -> SourceLang.Estonian
+            Finnish -> SourceLang.Finnish
+            French -> SourceLang.French
+            Hungarian -> SourceLang.Hungarian
+            Indonesian -> SourceLang.Indonesian
+            Italian -> SourceLang.Italian
+            Japanese -> SourceLang.Japanese
+            Lithuanian -> SourceLang.Lithuanian
+            Latvian -> SourceLang.Latvian
+            Dutch -> SourceLang.Dutch
+            Polish -> SourceLang.Polish
+            BrazilianPortuguese -> SourceLang.Portuguese
+            Portuguese -> SourceLang.Portuguese
+            Romanian -> SourceLang.Romanian
+            Russian -> SourceLang.Russian
+            Slovak -> SourceLang.Slovak
+            Slovenian -> SourceLang.Slovenian
+            Swedish -> SourceLang.Swedish
+            Turkish -> SourceLang.Turkish
+            Chinese -> SourceLang.Chinese
+        }
+    }
 }
