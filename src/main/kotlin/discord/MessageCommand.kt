@@ -11,7 +11,7 @@ abstract class MessageCommand : Command<MessageCommandInteraction>() {
     ) {
         defaultMemberPermissions = Permissions(permissions)
 
-        localizeName(name)
+        localizeName(this@MessageCommand.name)
     }
 
     override suspend fun makeGuildCommand(kord: Kord, guildId: Long) = kord.createGuildMessageCommand(
@@ -20,6 +20,6 @@ abstract class MessageCommand : Command<MessageCommandInteraction>() {
     ) {
         defaultMemberPermissions = Permissions(permissions)
 
-        localizeName(name)
+        localizeName(this@MessageCommand.name)
     }
 }

@@ -11,7 +11,7 @@ abstract class UserCommand : Command<UserCommandInteraction>() {
     ) {
         defaultMemberPermissions = Permissions(permissions)
 
-        localizeName(name)
+        localizeName(this@UserCommand.name)
     }
 
     override suspend fun makeGuildCommand(kord: Kord, guildId: Long) = kord.createGuildUserCommand(
@@ -20,6 +20,6 @@ abstract class UserCommand : Command<UserCommandInteraction>() {
     ) {
         defaultMemberPermissions = Permissions(permissions)
 
-        localizeName(name)
+        localizeName(this@UserCommand.name)
     }
 }

@@ -17,8 +17,8 @@ abstract class ChatInputCommand : Command<ChatInputCommandInteraction>() {
 
         defaultMemberPermissions = Permissions(permissions)
 
-        localizeName(name, snakeCase = true)
-        localizeDescription(description)
+        localizeName(this@ChatInputCommand.name, snakeCase = true)
+        localizeDescription(this@ChatInputCommand.description)
     }
 
     override suspend fun makeGuildCommand(kord: Kord, guildId: Long) = kord.createGuildChatInputCommand(
@@ -30,7 +30,7 @@ abstract class ChatInputCommand : Command<ChatInputCommandInteraction>() {
 
         defaultMemberPermissions = Permissions(permissions)
 
-        localizeName(name, snakeCase = true)
-        localizeDescription(description)
+        localizeName(this@ChatInputCommand.name, snakeCase = true)
+        localizeDescription(this@ChatInputCommand.description)
     }
 }
