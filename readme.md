@@ -12,3 +12,5 @@ If a message happens to be written in a wrong language, you can right-click it a
 
 All commands, parameters, options, etc. are available in all Discord-supported languages, so users can always read them.
 They all are shown in different languages depending on what language a user has selected in their Discord settings.
+
+### [**Add TransL to your server!**](https://discord.com/api/oauth2/authorize?client_id=1012790735151583302&scope=applications.commands)
