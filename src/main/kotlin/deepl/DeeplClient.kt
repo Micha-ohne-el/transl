@@ -20,7 +20,7 @@ class DeeplClient(
     private val authKey: String
 ) {
     suspend fun translate(text: String, targetLang: TargetLang, sourceLang: SourceLang? = null): String {
-        log.info("Translating from $targetLang to $sourceLang: ${text.quote()}")
+        log.info("Translating from $sourceLang to $targetLang: ${text.quote()}")
 
         val response = client.submitForm(
             url = "v2/translate",
