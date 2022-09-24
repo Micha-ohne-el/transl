@@ -46,11 +46,11 @@ object SetGuildLang : ChatInputCommand() {
 
         behavior.respond {
             content = TranslationRepo.translate(
-                "The server language has been set to '$lang'.",
+                "The server language has been set to “$lang”.",
                 oldGuildLang,
                 SourceLang.English
             ) + "\n" + TranslationRepo.translate(
-                "The server language has been set to '$lang'.",
+                "The server language has been set to “$lang”.",
                 GuildLangRepo.getGuildLangOrDefault(guildId),
                 SourceLang.English
             )

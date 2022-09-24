@@ -20,7 +20,7 @@ object GetGuildLang : ChatInputCommand() {
 
         behavior.respond {
             content = TranslationRepo.translate(
-                "The current server language is set to $currentLang.",
+                "The current server language is set to “$currentLang”.",
                 GuildLangRepo.getGuildLangOrDefault(guildId),
                 SourceLang.English
             )
