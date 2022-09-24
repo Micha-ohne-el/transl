@@ -56,15 +56,20 @@ suspend fun executeCommand(event: ApplicationCommandInteractionCreateEvent) {
 
     val command = registeredCommands[discordCommand]
 
-    @Suppress("UNCHECKED_CAST") // This is supposed to throw when the cast is unsuccessful.
-    command as Command<in ApplicationCommandInteraction>?
+    try {
+        @Suppress("UNCHECKED_CAST") // This is supposed to throw when the cast is unsuccessful.
+        command as Command<in ApplicationCommandInteraction>?
 
-    log.infoTime(
-        "Executing command '${command?.name}'...",
-        "Successfully executed command '${command?.name}'."
-    ) {
-        command?.interaction = event.interaction
-        command?.execute()
+        log.infoTime(
+            "Executing command '${command?.name}'...",
+            "Successfully executed command '${command?.name}'."
+        ) {
+            command?.interaction = event.interaction
+            command?.execute()
+        }
+    } catch (error: Throwable) {
+        log.error("An error occurred while executing command '${command?.name}'!")
+        log.error(error.stackTraceToString())
     }
 }
 
