@@ -13,7 +13,7 @@ object TranslateMessage : MessageCommand() {
     override suspend fun execute() {
         val behavior = interaction.deferEphemeralResponse()
 
-        val guildId = Translate.interaction.data.guildId.toLongOrNull()
+        val guildId = interaction.data.guildId.toLongOrNull()
 
         val guildLang = (if (guildId != null) GuildLangRepo.getGuildLang(guildId) else null)
             ?: interaction.guildLocale?.toTargetLang()
