@@ -1,0 +1,21 @@
+name: Check
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build the project
+        run: ./gradlew build
+      
+      - name: Run all automated tests
+        run: ./gradlew check
+
+      - name: Lint
+        uses: vroy/gha-kotlin-linter@v4
