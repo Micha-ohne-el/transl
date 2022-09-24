@@ -29,3 +29,11 @@ suspend fun LocalizedDescriptionBuilder.localizeDescription(
         transform(translation)
     }
 }
+
+fun String.sanitize() = replace(
+    Regex("""[^-_\p{L}\p{N}\p{IsDevanagari}\p{IsThai}]"""),
+    ""
+).cap(32)
+
+
+private fun String.cap(maxLength: Int) = substring(0, minOf(length, maxLength))

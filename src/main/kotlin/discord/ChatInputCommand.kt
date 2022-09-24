@@ -17,7 +17,7 @@ abstract class ChatInputCommand : Command<ChatInputCommandInteraction>() {
 
         defaultMemberPermissions = Permissions(permissions)
 
-        localizeName(this@ChatInputCommand.name) {it.toSnakeCase()}
+        localizeName(this@ChatInputCommand.name) {it.toSnakeCase().sanitize()}
         localizeDescription(this@ChatInputCommand.description)
     }
 
@@ -30,7 +30,7 @@ abstract class ChatInputCommand : Command<ChatInputCommandInteraction>() {
 
         defaultMemberPermissions = Permissions(permissions)
 
-        localizeName(this@ChatInputCommand.name) {it.toSnakeCase()}
+        localizeName(this@ChatInputCommand.name) {it.toSnakeCase().sanitize()}
         localizeDescription(this@ChatInputCommand.description)
     }
 }

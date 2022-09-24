@@ -4,7 +4,9 @@ import dev.kord.rest.builder.interaction.NumberOptionBuilder
 import discord.localizeDescription
 import discord.localizeName
 import discord.params.base.RequiredParam
+import discord.sanitize
 import kotlinx.coroutines.runBlocking
+import util.toSnakeCase
 
 class NumberParam(
     private val description: String
@@ -14,7 +16,7 @@ class NumberParam(
         required = true
 
         runBlocking {
-            localizeName(name, snakeCase = true)
+            localizeName(name) {it.toSnakeCase().sanitize()}
             localizeDescription(description)
         }
     }
