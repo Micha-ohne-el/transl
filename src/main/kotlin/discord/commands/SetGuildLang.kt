@@ -7,6 +7,7 @@ import dev.kord.core.behavior.interaction.response.respond
 import discord.ChatInputCommand
 import discord.params.StringParam
 import util.enumValueOfOrNull
+import util.toLong
 
 object SetGuildLang : ChatInputCommand() {
     override val name = "Set language"
@@ -24,6 +25,8 @@ object SetGuildLang : ChatInputCommand() {
     override suspend fun execute() {
         val behavior = interaction.deferEphemeralResponse()
 
+        val guildId = interaction.data.guildId.toLong()
+
         if (lang == null) {
             behavior.respond {
                 content = "Language $langName is not (yet) supported, unfortunately."
@@ -31,10 +34,7 @@ object SetGuildLang : ChatInputCommand() {
             return
         }
 
-        val guildIdSnowflake = interaction.data.guildId.value
-        val guildId = guildIdSnowflake?.value?.toLong()
-
-        GuildLangRepo.setGuildLang(guildId!!, lang!!)
+        GuildLangRepo.setGuildLang(guildId, lang!!)
 
         behavior.respond {
             content = "Language set to $lang."

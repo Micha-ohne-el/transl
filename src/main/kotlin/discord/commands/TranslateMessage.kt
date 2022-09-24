@@ -5,6 +5,7 @@ import TranslationRepo
 import dev.kord.core.behavior.interaction.response.respond
 import discord.MessageCommand
 import discord.toTargetLang
+import util.toLongOrNull
 
 object TranslateMessage : MessageCommand() {
     override val name = "Translate message"
@@ -12,8 +13,7 @@ object TranslateMessage : MessageCommand() {
     override suspend fun execute() {
         val behavior = interaction.deferEphemeralResponse()
 
-        val guildIdSnowflake = interaction.data.guildId.value
-        val guildId = guildIdSnowflake?.value?.toLong()
+        val guildId = Translate.interaction.data.guildId.toLongOrNull()
 
         val guildLang = (if (guildId != null) GuildLangRepo.getGuildLang(guildId) else null)
             ?: interaction.guildLocale?.toTargetLang()

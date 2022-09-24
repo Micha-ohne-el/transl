@@ -6,6 +6,7 @@ import dev.kord.core.behavior.interaction.response.respond
 import discord.ChatInputCommand
 import discord.params.StringParam
 import discord.toTargetLang
+import util.toLongOrNull
 
 object Translate : ChatInputCommand() {
     override val name = "Translate"
@@ -16,8 +17,7 @@ object Translate : ChatInputCommand() {
     override suspend fun execute() {
         val behavior = interaction.deferPublicResponse()
 
-        val guildIdSnowflake = interaction.data.guildId.value
-        val guildId = guildIdSnowflake?.value?.toLong()
+        val guildId = interaction.data.guildId.toLongOrNull()
 
         val guildLang = (if (guildId != null) GuildLangRepo.getGuildLang(guildId) else null)
             ?: interaction.guildLocale?.toTargetLang()

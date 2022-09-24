@@ -23,6 +23,8 @@ object GuildLangRepo {
         guildLang?.lang
     }
 
+    fun getGuildLangOrDefault(guildId: Long) = getGuildLang(guildId) ?: defaultGuildLang
+
     fun setGuildLang(guildId: Long, lang: TargetLang): Unit = transaction(db) {
         addLogger(Slf4jSqlDebugLogger)
 
