@@ -8,6 +8,7 @@ import discord.sanitize
 import kotlinx.coroutines.runBlocking
 import util.toSnakeCase
 import util.toSpaceCase
+import util.toTitleSpaceCase
 
 class StringParam(
     private val description: String,
@@ -19,9 +20,9 @@ class StringParam(
 
         if (allowedChoices != null) {
             for (choiceName in allowedChoices.subList(0, 24)) { // Discord limits the amount of choices to 25.
-                choice(choiceName, choiceName) {
+                choice(choiceName.toTitleSpaceCase(), choiceName) {
                     runBlocking {
-                        localizeName(choiceName)
+                        localizeName(choiceName.toTitleSpaceCase())
                     }
                 }
             }
