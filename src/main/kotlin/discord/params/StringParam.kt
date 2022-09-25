@@ -27,8 +27,8 @@ class StringParam(
         }
 
         runBlocking {
-            localizeName(name) {it.toSnakeCase().sanitize()}
-            localizeDescription(description)
+            localizeName(this@StringParam.name) {it.toSnakeCase().sanitize()}
+            localizeDescription(this@StringParam.description)
         }
     }
 }

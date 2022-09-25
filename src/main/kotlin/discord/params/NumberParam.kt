@@ -16,8 +16,8 @@ class NumberParam(
         required = true
 
         runBlocking {
-            localizeName(name) {it.toSnakeCase().sanitize()}
-            localizeDescription(description)
+            localizeName(this@NumberParam.name) {it.toSnakeCase().sanitize()}
+            localizeDescription(this@NumberParam.description)
         }
     }
 }
