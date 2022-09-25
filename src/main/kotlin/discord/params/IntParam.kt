@@ -7,6 +7,7 @@ import discord.params.base.RequiredParam
 import discord.sanitize
 import kotlinx.coroutines.runBlocking
 import util.toSnakeCase
+import util.toSpaceCase
 
 class IntParam(
     private val description: String
@@ -16,7 +17,7 @@ class IntParam(
         required = true
 
         runBlocking {
-            localizeName(this@IntParam.name) {it.toSnakeCase().sanitize()}
+            localizeName(this@IntParam.name.toSpaceCase()) {it.toSnakeCase().sanitize()}
             localizeDescription(this@IntParam.description)
         }
     }
