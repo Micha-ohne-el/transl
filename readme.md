@@ -61,7 +61,7 @@ All translations are cached persistently, so all later startups won't take nearl
 If you're using an IDE, you might not need these, but if you're running the Gradle Wrapper manually, you will.
 Run them by executing `./gradlew <command>` (or `./gradlew.bat <command>` on Windows).
 | command | what it does                                                                                                |
-| ------: | ----------------------------------------------------------------------------------------------------------- |
+| ------: | :---------------------------------------------------------------------------------------------------------- |
 |  `jar`  | builds and packages TransL into a JAR file, which you can distribute, upload to a server, or whatever else. |
 | `check` | runs all automated tests in the project, to make sure everything is working as it should.                   |
 | `build` | does all of the above.                                                                                      |
