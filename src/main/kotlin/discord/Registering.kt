@@ -24,8 +24,6 @@ suspend fun registerCommandsGlobally(kord: Kord) {
                 val discordCommand = command.makeGlobalCommand(kord)
 
                 registeredCommands[discordCommand] = command
-
-                log.info("Finished registering '${command.name}' globally.")
             }
         }
     }
@@ -44,8 +42,6 @@ suspend fun registerCommandsForGuild(kord: Kord, guildId: Long) {
                 val discordCommand = command.makeGuildCommand(kord, guildId)
 
                 registeredCommands[discordCommand] = command
-
-                log.info("Finished registering '${command.name}' for guild $guildId.")
             }
         }
     }
