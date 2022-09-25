@@ -4,7 +4,10 @@
 A Discord bot that allows people from all over the world to communicate!  
 It uses the excellent [DeepL Translator](https://deepl.com) for maximum translation accuracy.
 
+[TransL Demo.webm](https://user-images.githubusercontent.com/68816703/192163260-4e2ed324-2d6f-4e15-a0d1-8999fcd789f6.webm)
+
 ## Features
+
 TransL is designed so that all the text in your server is in the same language.
 You can set your preferred server language through a command, and all messages will – by default – be translated into it.
 
