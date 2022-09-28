@@ -1,6 +1,5 @@
 package deepl
 
-import Config
 import deepl.models.Translation
 import deepl.models.TranslationResponse
 import dev.kord.rest.request.KtorRequestException
@@ -61,7 +60,7 @@ class DeeplClient(
 
     private val client = HttpClient {
         install(UserAgent) {
-            agent = "TransL Discord Bot/${Config.version}"
+            agent = "TransL Discord Bot"
         }
         install(DefaultRequest) {
             url(baseUrl)
