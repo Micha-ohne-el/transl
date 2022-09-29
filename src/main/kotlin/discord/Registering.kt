@@ -50,21 +50,21 @@ suspend fun registerCommandsForGuild(kord: Kord, guildId: Long) {
 suspend fun executeCommand(event: ApplicationCommandInteractionCreateEvent) {
     val discordCommand = registeredCommands.keys.find { it.id == event.interaction.invokedCommandId }
 
-    val command = registeredCommands[discordCommand]
+    val command = registeredCommands[discordCommand] ?: return
 
     try {
         @Suppress("UNCHECKED_CAST") // This is supposed to throw when the cast is unsuccessful.
-        command as Command<in ApplicationCommandInteraction>?
+        command as Command<in ApplicationCommandInteraction>
 
         log.infoTime(
-            "Executing command '${command?.name}'...",
-            "Successfully executed command '${command?.name}'."
+            "Executing command '${command.name}'...",
+            "Successfully executed command '${command.name}'."
         ) {
-            command?.interaction = event.interaction
-            command?.execute()
+            command.interaction = event.interaction
+            command.execute()
         }
     } catch (error: Throwable) {
-        log.error("An error occurred while executing command '${command?.name}'!")
+        log.error("An error occurred while executing command '${command.name}'!")
         log.error(error.stackTraceToString())
     }
 }
