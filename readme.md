@@ -19,32 +19,32 @@ They all are shown in different languages depending on what language a user has 
 ### Supported languages
 TransL supports all languages DeepL supports. Currently, that's these:
 *   Bulgarian
+*   Chinese
 *   Czech
 *   Danish
-*   German
-*   Greek
+*   Dutch
 *   English (translating *to* English, you can choose between American and Βritish English)
-*   Spanish
 *   Estonian
 *   Finnish
 *   French
+*   German
+*   Greek
 *   Hungarian
 *   Indonesian
 *   Italian
 *   Japanese
-*   Lithuanian
 *   Latvian
-*   Dutch
+*   Lithuanian
 *   Polish
 *   Portuguese (translating *to* Portuguese, you can choose between Portuguese for Portugal or Brazil)
 *   Romanian
 *   Russian
 *   Slovak
 *   Slovenian
+*   Spanish
 *   Swedish
 *   Turkish
 *   Ukrainian
-*   Chinese
 
 Of course, it can also auto-detect the input language.
 
