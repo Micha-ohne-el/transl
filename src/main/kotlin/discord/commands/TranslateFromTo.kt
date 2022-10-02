@@ -34,11 +34,8 @@ object TranslateFromTo : ChatInputCommand() {
     private val message by StringParam("The message you want to translate.")
 
     override suspend fun execute() {
-        val behavior = interaction.deferPublicResponse()
-
-
         if (targetLang == null) {
-            behavior.respond {
+            interaction.deferEphemeralResponse().respond {
                 content = TranslationRepo.translate(
                     "Language “$targetLanguage” is not (yet) supported, unfortunately.",
                     GuildLangRepo.getGuildLangOrDefault(interaction.data.guildId.toLong()),
@@ -47,6 +44,8 @@ object TranslateFromTo : ChatInputCommand() {
             }
             return
         }
+
+        val behavior = interaction.deferPublicResponse()
 
         behavior.respond {
             content = TranslationRepo.translate(message, targetLang!!, sourceLang)
