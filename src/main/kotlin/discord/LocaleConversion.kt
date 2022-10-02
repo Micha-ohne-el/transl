@@ -29,7 +29,7 @@ fun Locale.toSourceLang(): SourceLang {
         Locale.GREEK -> SourceLang.Greek
         Locale.BULGARIAN -> SourceLang.Bulgarian
         Locale.RUSSIAN -> SourceLang.Russian
-        Locale.UKRAINIAN -> SourceLang.Russian // source: https://www.ukraine.com/culture/languages/
+        Locale.UKRAINIAN -> SourceLang.Ukrainian
         Locale.HINDI -> SourceLang.English // source: https://www.berlitz.com/blog/indian-languages-spoken-list
         Locale.THAI -> SourceLang.English // source: https://www.tourismthailand.org/Articles/plan-your-trip-language-and-culture
         Locale.CHINESE_CHINA -> SourceLang.Chinese
@@ -66,7 +66,7 @@ fun Locale.toTargetLang(): TargetLang {
         Locale.GREEK -> TargetLang.Greek
         Locale.BULGARIAN -> TargetLang.Bulgarian
         Locale.RUSSIAN -> TargetLang.Russian
-        Locale.UKRAINIAN -> TargetLang.Russian // source: https://www.ukraine.com/culture/languages/
+        Locale.UKRAINIAN -> TargetLang.Ukrainian
         Locale.HINDI -> TargetLang.BritishEnglish // source: https://www.berlitz.com/blog/indian-languages-spoken-list
         Locale.THAI -> TargetLang.BritishEnglish // source: https://www.tourismthailand.org/Articles/plan-your-trip-language-and-culture
         Locale.CHINESE_CHINA -> TargetLang.Chinese

@@ -30,6 +30,7 @@ enum class SourceLang(
     Slovenian("SL"),
     Swedish("SV"),
     Turkish("TR"),
+    Ukrainian("UK"),
     Chinese("ZH");
 
     companion object {
@@ -73,6 +74,7 @@ enum class TargetLang(
     Slovenian("SL"),
     Swedish("SV"),
     Turkish("TR"),
+    Ukrainian("UK"),
     Chinese("ZH");
 
     fun toSourceLang(): SourceLang {
@@ -104,6 +106,7 @@ enum class TargetLang(
             Slovenian -> SourceLang.Slovenian
             Swedish -> SourceLang.Swedish
             Turkish -> SourceLang.Turkish
+            Ukrainian -> SourceLang.Ukrainian
             Chinese -> SourceLang.Chinese
         }
     }
