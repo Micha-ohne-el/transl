@@ -79,7 +79,12 @@ suspend fun completeSuggestions(event: AutoCompleteInteractionCreateEvent) {
 
     val param = command.params.single {it.name == optionName}
 
-    param.suggest(event.interaction)
+    log.infoTime(
+        "Suggesting completions for command '${command.name}' and param '${param.name}' for query '${event.interaction.focusedOption.value}'...",
+        "Done."
+    ) {
+        param.suggest(event.interaction)
+    }
 }
 
 
