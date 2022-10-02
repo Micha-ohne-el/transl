@@ -16,6 +16,38 @@ If a message happens to be written in a wrong language, you can right-click it a
 All commands, parameters, options, etc. are available in all Discord-supported languages, so users can always read them.
 They all are shown in different languages depending on what language a user has selected in their Discord settings.
 
+### Supported languages
+TransL supports all languages DeepL supports. Currently, that's these:
+*   Bulgarian
+*   Czech
+*   Danish
+*   German
+*   Greek
+*   English (translating *to* English, you can choose between American and Βritish English)
+*   Spanish
+*   Estonian
+*   Finnish
+*   French
+*   Hungarian
+*   Indonesian
+*   Italian
+*   Japanese
+*   Lithuanian
+*   Latvian
+*   Dutch
+*   Polish
+*   Portuguese (translating *to* Portuguese, you can choose between Portuguese for Portugal or Brazil)
+*   Romanian
+*   Russian
+*   Slovak
+*   Slovenian
+*   Swedish
+*   Turkish
+*   Ukrainian
+*   Chinese
+
+Of course, it can also auto-detect the input language.
+
 ### [**Add TransL to your server!**](https://discord.com/api/oauth2/authorize?client_id=1012790735151583302&permissions=0&scope=bot%20applications.commands)
 
 ## Development setup
