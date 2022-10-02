@@ -28,7 +28,10 @@ class DeeplClient(
                 formParameters = Parameters.build {
                     append("text", text)
                     append("target_lang", targetLang.code)
-                    append("formality", "less")
+
+                    if (targetLang.hasFormality) {
+                        append("formality", "less")
+                    }
 
                     if (sourceLang != null) {
                         append("source_lang", sourceLang.code)
