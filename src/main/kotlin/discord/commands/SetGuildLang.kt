@@ -8,6 +8,7 @@ import dev.kord.common.entity.Permission
 import dev.kord.core.behavior.interaction.response.respond
 import discord.ChatInputCommand
 import discord.params.StringParam
+import discord.params.base.Suggestion
 import util.enumValueOfOrNull
 import util.toLong
 
@@ -17,10 +18,11 @@ object SetGuildLang : ChatInputCommand() {
 
     override val permissions = setOf(Permission.ManageGuild)
 
-    private val language by StringParam(
-        "The language people should talk in.",
-        TargetLang.values().map(TargetLang::name)
-    )
+    private val language by StringParam("The language people should talk in.") { query ->
+        SourceLang.find(query).map { lang ->
+            Suggestion(lang.name, lang.name)
+        }
+    }
 
     private val lang get() = enumValueOfOrNull<TargetLang>(language)
 

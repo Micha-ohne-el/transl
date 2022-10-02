@@ -7,6 +7,7 @@ import deepl.TargetLang
 import dev.kord.core.behavior.interaction.response.respond
 import discord.ChatInputCommand
 import discord.params.StringParam
+import discord.params.base.Suggestion
 import discord.toTargetLang
 import util.enumValueOfOrNull
 import util.toLongOrNull
@@ -15,10 +16,11 @@ object TranslateTo : ChatInputCommand() {
     override val name = "Translate to X"
     override val description = "Translate from the server language to any other language!"
 
-    private val targetLanguage by StringParam(
-        "The language your message should be translated into.",
-        TargetLang.values().map(TargetLang::name)
-    )
+    private val targetLanguage by StringParam("The language your message should be translated into.") { query ->
+        TargetLang.find(query).map { lang ->
+            Suggestion(lang.name, lang.name)
+        }
+    }
 
     private val targetLang get() = enumValueOfOrNull<TargetLang>(targetLanguage)
 

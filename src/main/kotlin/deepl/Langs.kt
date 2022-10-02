@@ -1,5 +1,7 @@
 package deepl
 
+import search
+
 enum class SourceLang(
     val code: String
 ) {
@@ -29,6 +31,15 @@ enum class SourceLang(
     Swedish("SV"),
     Turkish("TR"),
     Chinese("ZH");
+
+    companion object {
+        fun find(query: String): Iterable<SourceLang> {
+            val resultsByName = values().asIterable().search(query) {it.name}
+            val resultsByCode = values().asIterable().search(query) {it.code}
+
+            return (resultsByName + resultsByCode).sortedBy {it.quality}.map {it.value}.distinct()
+        }
+    }
 }
 
 enum class TargetLang(
@@ -94,6 +105,15 @@ enum class TargetLang(
             Swedish -> SourceLang.Swedish
             Turkish -> SourceLang.Turkish
             Chinese -> SourceLang.Chinese
+        }
+    }
+
+    companion object {
+        fun find(query: String): Iterable<TargetLang> {
+            val resultsByName = values().asIterable().search(query) {it.name}
+            val resultsByCode = values().asIterable().search(query) {it.code}
+
+            return (resultsByName + resultsByCode).sortedBy {it.quality}.map {it.value}.distinct()
         }
     }
 }

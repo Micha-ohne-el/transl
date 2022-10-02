@@ -1,5 +1,6 @@
 package discord.params.base
 
+import dev.kord.core.entity.interaction.AutoCompleteInteraction
 import dev.kord.core.entity.interaction.ChatInputCommandInteraction
 import dev.kord.rest.builder.interaction.OptionsBuilder
 import discord.Command
@@ -24,8 +25,11 @@ abstract class Param<T> : ReadOnlyProperty<Command<out ChatInputCommandInteracti
         property: KProperty<*>
     ): T
 
+    abstract suspend fun suggest(interaction: AutoCompleteInteraction)
+
+    open val suggester: ((query: String) -> Iterable<Suggestion<T>>)? = null
+
     abstract val option: OptionsBuilder
 
-
-    protected lateinit var name: String
+    lateinit var name: String
 }

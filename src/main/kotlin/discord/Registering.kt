@@ -5,6 +5,7 @@ import dev.kord.core.Kord
 import dev.kord.core.entity.application.ApplicationCommand
 import dev.kord.core.entity.interaction.ApplicationCommandInteraction
 import dev.kord.core.event.interaction.ApplicationCommandInteractionCreateEvent
+import dev.kord.core.event.interaction.AutoCompleteInteractionCreateEvent
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import util.infoTime
@@ -48,7 +49,7 @@ suspend fun registerCommandsForGuild(kord: Kord, guildId: Long) {
 }
 
 suspend fun executeCommand(event: ApplicationCommandInteractionCreateEvent) {
-    val discordCommand = registeredCommands.keys.find { it.id == event.interaction.invokedCommandId }
+    val discordCommand = registeredCommands.keys.find {it.id == event.interaction.invokedCommandId}
 
     val command = registeredCommands[discordCommand] ?: return
 
@@ -67,6 +68,18 @@ suspend fun executeCommand(event: ApplicationCommandInteractionCreateEvent) {
         log.error("An error occurred while executing command '${command.name}'!")
         log.error(error.stackTraceToString())
     }
+}
+
+suspend fun completeSuggestions(event: AutoCompleteInteractionCreateEvent) {
+    val discordCommand = registeredCommands.keys.find {it.id == event.interaction.command.data.id.value}
+
+    val command = registeredCommands[discordCommand] ?: return
+
+    val optionName = event.interaction.command.options.entries.single {it.value.focused}.key
+
+    val param = command.params.single {it.name == optionName}
+
+    param.suggest(event.interaction)
 }
 
 
