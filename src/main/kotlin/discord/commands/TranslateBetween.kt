@@ -11,7 +11,7 @@ import discord.params.base.Suggestion
 import util.enumValueOfOrNull
 import util.toLong
 
-object TranslateFromTo : ChatInputCommand() {
+object TranslateBetween : ChatInputCommand() {
     override val name = "Translate between"
     override val description = "Translate from any language to any other language!"
 

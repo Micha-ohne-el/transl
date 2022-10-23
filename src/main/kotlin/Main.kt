@@ -4,7 +4,7 @@ import discord.commands.GetGuildLang
 import discord.commands.SetGuildLang
 import discord.commands.Translate
 import discord.commands.TranslateFrom
-import discord.commands.TranslateFromTo
+import discord.commands.TranslateBetween
 import discord.commands.TranslateMessage
 import discord.commands.TranslateTo
 import discord.completeSuggestions
@@ -37,5 +37,5 @@ val commands = listOf(
     SetGuildLang,
     TranslateFrom,
     TranslateTo,
-    TranslateFromTo
+    TranslateBetween
 )
