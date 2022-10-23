@@ -11,6 +11,7 @@ import discord.params.base.Suggestion
 import discord.toTargetLang
 import util.enumValueOfOrNull
 import util.toLongOrNull
+import util.toTitleSpaceCase
 
 object TranslateTo : ChatInputCommand() {
     override val name = "Translate to"
@@ -32,7 +33,7 @@ object TranslateTo : ChatInputCommand() {
         if (targetLang == null) {
             interaction.deferEphemeralResponse().respond {
                 content = TranslationRepo.translate(
-                    "Language “$targetLanguage” is not (yet) supported, unfortunately.",
+                    "Language “${targetLanguage.toTitleSpaceCase()}” is not (yet) supported, unfortunately.",
                     GuildLangRepo.getGuildLangOrDefault(guildId ?: 0),
                     SourceLang.English
                 )

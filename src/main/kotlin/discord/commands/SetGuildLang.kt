@@ -11,6 +11,7 @@ import discord.params.StringParam
 import discord.params.base.Suggestion
 import util.enumValueOfOrNull
 import util.toLong
+import util.toTitleSpaceCase
 
 object SetGuildLang : ChatInputCommand() {
     override val name = "Set language"
@@ -34,7 +35,7 @@ object SetGuildLang : ChatInputCommand() {
         if (lang == null) {
             behavior.respond {
                 content = TranslationRepo.translate(
-                    "Language “$language” is not (yet) supported, unfortunately.",
+                    "Language “${language.toTitleSpaceCase()}” is not (yet) supported, unfortunately.",
                     GuildLangRepo.getGuildLangOrDefault(guildId),
                     SourceLang.English
                 )
@@ -48,11 +49,11 @@ object SetGuildLang : ChatInputCommand() {
 
         behavior.respond {
             content = TranslationRepo.translate(
-                "The server language has been set to “$lang”.",
+                "The server language has been set to “${lang!!.name.toTitleSpaceCase()}”.",
                 oldGuildLang,
                 SourceLang.English
             ) + "\n" + TranslationRepo.translate(
-                "The server language has been set to “$lang”.",
+                "The server language has been set to “${lang!!.name.toTitleSpaceCase()}”.",
                 GuildLangRepo.getGuildLangOrDefault(guildId),
                 SourceLang.English
             )
