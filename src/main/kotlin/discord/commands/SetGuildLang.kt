@@ -19,7 +19,7 @@ object SetGuildLang : ChatInputCommand() {
     override val permissions = setOf(Permission.ManageGuild)
 
     private val language by StringParam("The language people should talk in.") { query ->
-        SourceLang.find(query).map { lang ->
+        TargetLang.find(query).map { lang ->
             Suggestion(lang.name, lang.name)
         }
     }
