@@ -12,7 +12,7 @@ import util.enumValueOfOrNull
 import util.toLongOrNull
 
 object TranslateFrom : ChatInputCommand() {
-    override val name = "Translate from X"
+    override val name = "Translate from"
     override val description = "Translate from any language to the server language!"
 
     private val sourceLanguage by StringParam("The language your original message is in.") { query ->
