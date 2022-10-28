@@ -3,6 +3,7 @@ package discord.commands
 import GuildLangRepo
 import TranslationRepo
 import deepl.SourceLang
+import dev.kord.common.entity.Permission
 import dev.kord.core.behavior.interaction.response.respond
 import discord.ChatInputCommand
 import util.toLong
@@ -11,6 +12,8 @@ import util.toTitleSpaceCase
 object GetGuildLang : ChatInputCommand() {
     override val name = "Get language"
     override val description = "Get this Server's preferred language."
+
+    override val permissions = setOf(Permission.ManageGuild)
 
     override suspend fun execute() {
         val behavior = interaction.deferEphemeralResponse()
