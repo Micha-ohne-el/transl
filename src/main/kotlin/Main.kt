@@ -5,10 +5,7 @@ import dev.kord.core.on
 import discord.commands.GetGuildLang
 import discord.commands.SetGuildLang
 import discord.commands.Translate
-import discord.commands.TranslateBetween
-import discord.commands.TranslateFrom
 import discord.commands.TranslateMessage
-import discord.commands.TranslateTo
 import discord.completeSuggestions
 import discord.executeCommand
 import discord.registerCommandsForGuild
@@ -49,8 +46,5 @@ val commands = listOf(
     Translate,
     TranslateMessage,
     GetGuildLang,
-    SetGuildLang,
-    TranslateFrom,
-    TranslateTo,
-    TranslateBetween
+    SetGuildLang
 )
