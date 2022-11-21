@@ -7,7 +7,6 @@ import dev.kord.common.entity.Permission
 import discord.ChatInputCommand
 import util.respondNeutrally
 import util.toLong
-import util.toTitleSpaceCase
 
 object GetGuildLang : ChatInputCommand() {
     override val name = "Get language"
@@ -24,7 +23,7 @@ object GetGuildLang : ChatInputCommand() {
 
         behavior.respondNeutrally {
             description = TranslationRepo.translate(
-                "The current server language is set to “${currentLang.name.toTitleSpaceCase()}”.",
+                "The current server language is set to “$currentLang”.",
                 GuildLangRepo.getGuildLangOrDefault(guildId),
                 SourceLang.English
             )

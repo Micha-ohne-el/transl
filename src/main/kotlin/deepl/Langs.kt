@@ -1,37 +1,41 @@
 package deepl
 
 import search
+import util.toTitleSpaceCase
 
 enum class SourceLang(
-    val code: String
+    val code: String,
+    val flag: String
 ) {
-    Bulgarian("BG"),
-    Czech("CS"),
-    Danish("DA"),
-    German("DE"),
-    Greek("EL"),
-    English("EN"),
-    Spanish("ES"),
-    Estonian("ET"),
-    Finnish("FI"),
-    French("FR"),
-    Hungarian("HU"),
-    Indonesian("ID"),
-    Italian("IT"),
-    Japanese("JA"),
-    Lithuanian("LT"),
-    Latvian("LV"),
-    Dutch("NL"),
-    Polish("PL"),
-    Portuguese("PT"),
-    Romanian("RO"),
-    Russian("RU"),
-    Slovak("SK"),
-    Slovenian("SL"),
-    Swedish("SV"),
-    Turkish("TR"),
-    Ukrainian("UK"),
-    Chinese("ZH");
+    Bulgarian("BG", "\uD83C\uDDE7\uD83C\uDDEC"),
+    Czech("CS", "\uD83C\uDDE8\uD83C\uDDFF"),
+    Danish("DA", "\uD83C\uDDE9\uD83C\uDDF0"),
+    German("DE", "\uD83C\uDDE9\uD83C\uDDEA"),
+    Greek("EL", "\uD83C\uDDEC\uD83C\uDDF7"),
+    English("EN", "\uD83C\uDDEC\uD83C\uDDE7"),
+    Spanish("ES", "\uD83C\uDDEA\uD83C\uDDF8"),
+    Estonian("ET", "\uD83C\uDDEA\uD83C\uDDEA"),
+    Finnish("FI", "\uD83C\uDDEB\uD83C\uDDEE"),
+    French("FR", "\uD83C\uDDEB\uD83C\uDDF7"),
+    Hungarian("HU", "\uD83C\uDDED\uD83C\uDDFA"),
+    Indonesian("ID", "\uD83C\uDDEE\uD83C\uDDE9"),
+    Italian("IT", "\uD83C\uDDEE\uD83C\uDDF9"),
+    Japanese("JA", "\uD83C\uDDEF\uD83C\uDDF5"),
+    Lithuanian("LT", "\uD83C\uDDF1\uD83C\uDDF9"),
+    Latvian("LV", "\uD83C\uDDF1\uD83C\uDDFB"),
+    Dutch("NL", "\uD83C\uDDF3\uD83C\uDDF1"),
+    Polish("PL", "\uD83C\uDDF5\uD83C\uDDF1"),
+    Portuguese("PT", "\uD83C\uDDF5\uD83C\uDDF9"),
+    Romanian("RO", "\uD83C\uDDF7\uD83C\uDDF4"),
+    Russian("RU", "\uD83C\uDDF7\uD83C\uDDFA"),
+    Slovak("SK", "\uD83C\uDDF8\uD83C\uDDF0"),
+    Slovenian("SL", "\uD83C\uDDF8\uD83C\uDDEE"),
+    Swedish("SV", "\uD83C\uDDF8\uD83C\uDDEA"),
+    Turkish("TR", "\uD83C\uDDF9\uD83C\uDDF7"),
+    Ukrainian("UK", "\uD83C\uDDFA\uD83C\uDDE6"),
+    Chinese("ZH", "\uD83C\uDDED\uD83C\uDDF0");
+
+    override fun toString() = name.toTitleSpaceCase()
 
     companion object {
         fun find(query: String): Iterable<SourceLang> {
@@ -45,37 +49,40 @@ enum class SourceLang(
 
 enum class TargetLang(
     val code: String,
+    val flag: String,
     val hasFormality: Boolean = false
 ) {
-    Bulgarian("BG"),
-    Czech("CS"),
-    Danish("DA"),
-    German("DE", true),
-    Greek("EL"),
-    BritishEnglish("EN-GB"),
-    AmericanEnglish("EN-US"),
-    Spanish("ES", true),
-    Estonian("ET"),
-    Finnish("FI"),
-    French("FR", true),
-    Hungarian("HU"),
-    Indonesian("ID"),
-    Italian("IT", true),
-    Japanese("JA"),
-    Lithuanian("LT"),
-    Latvian("LV"),
-    Dutch("NL", true),
-    Polish("PL", true),
-    BrazilianPortuguese("PT-BR", true),
-    Portuguese("PT-PT", true),
-    Romanian("RO"),
-    Russian("RU", true),
-    Slovak("SK"),
-    Slovenian("SL"),
-    Swedish("SV"),
-    Turkish("TR"),
-    Ukrainian("UK"),
-    Chinese("ZH");
+    Bulgarian("BG", "\uD83C\uDDE7\uD83C\uDDEC"),
+    Czech("CS", "\uD83C\uDDE8\uD83C\uDDFF"),
+    Danish("DA", "\uD83C\uDDE9\uD83C\uDDF0"),
+    German("DE", "\uD83C\uDDE9\uD83C\uDDEA", true),
+    Greek("EL", "\uD83C\uDDEC\uD83C\uDDF7"),
+    BritishEnglish("EN-GB", "\uD83C\uDDEC\uD83C\uDDE7"),
+    AmericanEnglish("EN-US", "\uD83C\uDDFA\uD83C\uDDF8"),
+    Spanish("ES", "\uD83C\uDDEA\uD83C\uDDF8", true),
+    Estonian("ET", "\uD83C\uDDEA\uD83C\uDDEA"),
+    Finnish("FI", "\uD83C\uDDEB\uD83C\uDDEE"),
+    French("FR", "\uD83C\uDDEB\uD83C\uDDF7", true),
+    Hungarian("HU", "\uD83C\uDDED\uD83C\uDDFA"),
+    Indonesian("ID", "\uD83C\uDDEE\uD83C\uDDE9"),
+    Italian("IT", "\uD83C\uDDEE\uD83C\uDDF9", true),
+    Japanese("JA", "\uD83C\uDDEF\uD83C\uDDF5"),
+    Lithuanian("LT", "\uD83C\uDDF1\uD83C\uDDF9"),
+    Latvian("LV", "\uD83C\uDDF1\uD83C\uDDFB"),
+    Dutch("NL", "\uD83C\uDDF3\uD83C\uDDF1", true),
+    Polish("PL", "\uD83C\uDDF5\uD83C\uDDF1", true),
+    BrazilianPortuguese("PT-BR", "\uD83C\uDDE7\uD83C\uDDF7", true),
+    Portuguese("PT-PT", "\uD83C\uDDF5\uD83C\uDDF9", true),
+    Romanian("RO", "\uD83C\uDDF7\uD83C\uDDF4"),
+    Russian("RU", "\uD83C\uDDF7\uD83C\uDDFA", true),
+    Slovak("SK", "\uD83C\uDDF8\uD83C\uDDF0"),
+    Slovenian("SL", "\uD83C\uDDF8\uD83C\uDDEE"),
+    Swedish("SV", "\uD83C\uDDF8\uD83C\uDDEA"),
+    Turkish("TR", "\uD83C\uDDF9\uD83C\uDDF7"),
+    Ukrainian("UK", "\uD83C\uDDFA\uD83C\uDDE6"),
+    Chinese("ZH", "\uD83C\uDDED\uD83C\uDDF0");
+
+    override fun toString() = name.toTitleSpaceCase()
 
     fun toSourceLang(): SourceLang {
         return when (this) {
