@@ -4,8 +4,8 @@ import GuildLangRepo
 import TranslationRepo
 import deepl.SourceLang
 import dev.kord.common.entity.Permission
-import dev.kord.core.behavior.interaction.response.respond
 import discord.ChatInputCommand
+import util.respondNeutrally
 import util.toLong
 import util.toTitleSpaceCase
 
@@ -22,8 +22,8 @@ object GetGuildLang : ChatInputCommand() {
 
         val currentLang = GuildLangRepo.getGuildLangOrDefault(guildId)
 
-        behavior.respond {
-            content = TranslationRepo.translate(
+        behavior.respondNeutrally {
+            description = TranslationRepo.translate(
                 "The current server language is set to “${currentLang.name.toTitleSpaceCase()}”.",
                 GuildLangRepo.getGuildLangOrDefault(guildId),
                 SourceLang.English

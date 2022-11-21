@@ -23,3 +23,12 @@ suspend fun DeferredMessageInteractionResponseBehavior.respondWithSuccess(errorE
             errorEmbed()
         }
     }
+
+suspend fun DeferredMessageInteractionResponseBehavior.respondNeutrally(errorEmbed: suspend EmbedBuilder.() -> Unit) =
+    respond {
+        embed {
+            color = Color.blurple
+
+            errorEmbed()
+        }
+    }
