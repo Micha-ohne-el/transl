@@ -5,12 +5,12 @@ import TranslationRepo
 import deepl.SourceLang
 import deepl.TargetLang
 import dev.kord.common.entity.Permission
-import dev.kord.core.behavior.interaction.response.respond
 import discord.ChatInputCommand
 import discord.params.StringParam
 import discord.params.base.Suggestion
 import util.enumValueOfOrNull
 import util.respondWithError
+import util.respondWithSuccess
 import util.toLong
 import util.toTitleSpaceCase
 
@@ -48,8 +48,8 @@ object SetGuildLang : ChatInputCommand() {
 
         GuildLangRepo.setGuildLang(guildId, lang!!)
 
-        behavior.respond {
-            content = TranslationRepo.translate(
+        behavior.respondWithSuccess {
+            description = TranslationRepo.translate(
                 "The server language has been set to “${lang!!.name.toTitleSpaceCase()}”.",
                 oldGuildLang,
                 SourceLang.English
