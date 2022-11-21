@@ -30,11 +30,7 @@ object Translate : ChatInputCommand() {
     }
 
     override suspend fun execute() {
-        val guildId = interaction.data.guildId.toLongOrNull()
-
-        val guildLang = (if (guildId != null) GuildLangRepo.getGuildLang(guildId) else null)
-            ?: interaction.guildLocale?.toTargetLang()
-            ?: GuildLangRepo.defaultGuildLang
+        val userLang = interaction.locale!!.toTargetLang()
 
         val sourceLang = try {
             sourceLanguage?.let { enumValueOf<SourceLang>(it) }
@@ -42,12 +38,18 @@ object Translate : ChatInputCommand() {
             interaction.deferEphemeralResponse().respond {
                 content = TranslationRepo.translate(
                     "Language “${sourceLanguage}” is not (yet) supported, unfortunately.",
-                    guildLang,
+                    userLang,
                     SourceLang.English
                 )
             }
             return
         }
+
+        val guildId = interaction.data.guildId.toLongOrNull()
+
+        val guildLang = (if (guildId != null) GuildLangRepo.getGuildLang(guildId) else null)
+            ?: interaction.guildLocale?.toTargetLang()
+            ?: GuildLangRepo.defaultGuildLang
 
         val targetLang = try {
             targetLanguage?.let { enumValueOf(it) } ?: guildLang
@@ -55,7 +57,7 @@ object Translate : ChatInputCommand() {
             interaction.deferEphemeralResponse().respond {
                 content = TranslationRepo.translate(
                     "Language “${targetLanguage}” is not (yet) supported, unfortunately.",
-                    guildLang,
+                    userLang,
                     SourceLang.English
                 )
             }
