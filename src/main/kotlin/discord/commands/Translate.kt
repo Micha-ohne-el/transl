@@ -9,6 +9,7 @@ import discord.ChatInputCommand
 import discord.params.StringParam
 import discord.params.base.Suggestion
 import discord.toTargetLang
+import util.respondWithError
 import util.toLongOrNull
 
 object Translate : ChatInputCommand() {
@@ -35,8 +36,8 @@ object Translate : ChatInputCommand() {
         val sourceLang = try {
             sourceLanguage?.let { enumValueOf<SourceLang>(it) }
         } catch (error: Throwable) {
-            interaction.deferEphemeralResponse().respond {
-                content = TranslationRepo.translate(
+            interaction.deferEphemeralResponse().respondWithError {
+                description = TranslationRepo.translate(
                     "Language “${sourceLanguage}” is not (yet) supported, unfortunately.",
                     userLang,
                     SourceLang.English
@@ -54,8 +55,8 @@ object Translate : ChatInputCommand() {
         val targetLang = try {
             targetLanguage?.let { enumValueOf(it) } ?: guildLang
         } catch (error: Throwable) {
-            interaction.deferEphemeralResponse().respond {
-                content = TranslationRepo.translate(
+            interaction.deferEphemeralResponse().respondWithError {
+                description = TranslationRepo.translate(
                     "Language “${targetLanguage}” is not (yet) supported, unfortunately.",
                     userLang,
                     SourceLang.English

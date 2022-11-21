@@ -10,6 +10,7 @@ import discord.ChatInputCommand
 import discord.params.StringParam
 import discord.params.base.Suggestion
 import util.enumValueOfOrNull
+import util.respondWithError
 import util.toLong
 import util.toTitleSpaceCase
 
@@ -33,8 +34,8 @@ object SetGuildLang : ChatInputCommand() {
         val guildId = interaction.data.guildId.toLong()
 
         if (lang == null) {
-            behavior.respond {
-                content = TranslationRepo.translate(
+            behavior.respondWithError {
+                description = TranslationRepo.translate(
                     "Language “${language.toTitleSpaceCase()}” is not (yet) supported, unfortunately.",
                     GuildLangRepo.getGuildLangOrDefault(guildId),
                     SourceLang.English
