@@ -14,17 +14,17 @@ repositories {
 }
 
 dependencies {
-    implementation("io.github.cdimascio:dotenv-kotlin:6.3.1")
+    implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
     implementation("dev.kord:kord-core:0.8.0-M17")
-    implementation("io.ktor:ktor-client-logging:2.1.3")
-    implementation("io.ktor:ktor-client-content-negotiation:2.1.3")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.1.3")
-    implementation("org.slf4j:slf4j-simple:2.0.3")
+    implementation("io.ktor:ktor-client-logging:2.2.2")
+    implementation("io.ktor:ktor-client-content-negotiation:2.2.2")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.2.2")
+    implementation("org.slf4j:slf4j-simple:2.0.6")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
-    implementation("org.jetbrains.exposed:exposed-core:0.40.1")
-    implementation("org.jetbrains.exposed:exposed-jdbc:0.40.1")
-    implementation("org.jetbrains.exposed:exposed-dao:0.40.1")
-    implementation("org.postgresql:postgresql:42.5.0")
+    implementation("org.jetbrains.exposed:exposed-core:0.41.1")
+    implementation("org.jetbrains.exposed:exposed-jdbc:0.41.1")
+    implementation("org.jetbrains.exposed:exposed-dao:0.41.1")
+    implementation("org.postgresql:postgresql:42.5.1")
 
     testImplementation("io.kotest:kotest-runner-junit5:5.5.4")
     testImplementation("io.kotest:kotest-assertions-core:5.5.4")
