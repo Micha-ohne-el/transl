@@ -6,7 +6,6 @@ import discord.commands.GetGuildLang
 import discord.commands.SetGuildLang
 import discord.commands.Translate
 import discord.commands.TranslateForMe
-import discord.commands.TranslateMessage
 import discord.completeSuggestions
 import discord.executeCommand
 import discord.registerCommandsForGuild
@@ -45,7 +44,6 @@ suspend fun main() {
 
 val commands = listOf(
     Translate,
-    TranslateMessage,
     TranslateForMe,
     GetGuildLang,
     SetGuildLang
