@@ -50,6 +50,10 @@ Of course, it can also auto-detect the input language.
 
 ### [**Add TransL to your server!**](https://discord.com/api/oauth2/authorize?client_id=1012790735151583302&permissions=0&scope=bot%20applications.commands)
 
+For any questions regarding TransL, feel free to join [the support server](https://discord.gg/99t5XMtjG9).
+
+Please read the [Terms of Service](legal.md#terms-of-service) before adding the bot to your server.
+
 ## Development setup
 ### Prerequisites
 *   A PostgreSQL database (running locally or on a server)
