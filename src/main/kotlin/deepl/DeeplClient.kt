@@ -3,14 +3,19 @@ package deepl
 import deepl.models.Translation
 import deepl.models.TranslationResponse
 import dev.kord.rest.request.KtorRequestException
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.plugins.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.request.*
-import io.ktor.client.request.forms.*
-import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.plugins.HttpRequestRetry
+import io.ktor.client.plugins.UserAgent
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.forms.submitForm
+import io.ktor.client.request.header
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.Parameters
+import io.ktor.http.quote
+import io.ktor.serialization.kotlinx.json.json
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -28,10 +33,7 @@ class DeeplClient(
                 formParameters = Parameters.build {
                     append("text", text)
                     append("target_lang", targetLang.code)
-
-                    if (targetLang.hasFormality) {
-                        append("formality", "less")
-                    }
+                    append("formality", "prefer_less")
 
                     if (sourceLang != null) {
                         append("source_lang", sourceLang.code)
