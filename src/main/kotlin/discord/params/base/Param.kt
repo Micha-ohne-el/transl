@@ -20,6 +20,7 @@ abstract class Param<T> : ReadOnlyProperty<Command<out ChatInputCommandInteracti
         return this
     }
 
+    @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
     abstract override operator fun getValue(
         command: Command<out ChatInputCommandInteraction>,
         property: KProperty<*>
