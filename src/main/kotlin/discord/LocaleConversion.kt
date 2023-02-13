@@ -17,7 +17,7 @@ fun Locale.toSourceLang(): SourceLang {
         Locale.LITHUANIAN -> SourceLang.Lithuanian
         Locale.HUNGARIAN -> SourceLang.Hungarian
         Locale.DUTCH -> SourceLang.Dutch
-        Locale.NORWEGIAN -> SourceLang.English // source: https://www.studyinnorway.no/living-in-norway/language
+        Locale.NORWEGIAN -> SourceLang.Norwegian
         Locale.POLISH -> SourceLang.Polish
         Locale.PORTUGUESE_BRAZIL -> SourceLang.Portuguese
         Locale.ROMANIAN -> SourceLang.Romanian
@@ -35,7 +35,7 @@ fun Locale.toSourceLang(): SourceLang {
         Locale.CHINESE_CHINA -> SourceLang.Chinese
         Locale.JAPANESE -> SourceLang.Japanese
         Locale.CHINESE_TAIWAN -> SourceLang.Chinese // source: https://www.worldatlas.com/articles/what-languages-are-spoken-in-taiwan.html
-        Locale.KOREAN -> SourceLang.English // source: https://www.worldatlas.com/articles/what-languages-are-spoken-in-south-korea.html
+        Locale.KOREAN -> SourceLang.Korean
 
         else -> SourceLang.English
     }
@@ -54,7 +54,7 @@ fun Locale.toTargetLang(): TargetLang {
         Locale.LITHUANIAN -> TargetLang.Lithuanian
         Locale.HUNGARIAN -> TargetLang.Hungarian
         Locale.DUTCH -> TargetLang.Dutch
-        Locale.NORWEGIAN -> TargetLang.BritishEnglish // source: https://www.studyinnorway.no/living-in-norway/language
+        Locale.NORWEGIAN -> TargetLang.Norwegian
         Locale.POLISH -> TargetLang.Polish
         Locale.PORTUGUESE_BRAZIL -> TargetLang.BrazilianPortuguese
         Locale.ROMANIAN -> TargetLang.Romanian
@@ -72,7 +72,7 @@ fun Locale.toTargetLang(): TargetLang {
         Locale.CHINESE_CHINA -> TargetLang.Chinese
         Locale.JAPANESE -> TargetLang.Japanese
         Locale.CHINESE_TAIWAN -> TargetLang.Chinese // source: https://www.worldatlas.com/articles/what-languages-are-spoken-in-taiwan.html
-        Locale.KOREAN -> TargetLang.BritishEnglish // source: https://www.worldatlas.com/articles/what-languages-are-spoken-in-south-korea.html
+        Locale.KOREAN -> TargetLang.Korean
 
         else -> TargetLang.BritishEnglish
     }

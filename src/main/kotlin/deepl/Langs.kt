@@ -21,8 +21,10 @@ enum class SourceLang(
     Indonesian("ID"),
     Italian("IT"),
     Japanese("JA"),
+    Korean("KO"),
     Latvian("LV"),
     Lithuanian("LT"),
+    Norwegian("NB"),
     Polish("PL"),
     Portuguese("PT"),
     Romanian("RO"),
@@ -66,8 +68,10 @@ enum class TargetLang(
     Indonesian("ID"),
     Italian("IT"),
     Japanese("JA"),
+    Korean("KO"),
     Latvian("LV"),
     Lithuanian("LT"),
+    Norwegian("NB"),
     Polish("PL"),
     Portuguese("PT-PT"),
     Romanian("RO"),
@@ -83,35 +87,37 @@ enum class TargetLang(
 
     fun toSourceLang(): SourceLang {
         return when (this) {
+            AmericanEnglish -> SourceLang.English
+            BrazilianPortuguese -> SourceLang.Portuguese
+            BritishEnglish -> SourceLang.English
             Bulgarian -> SourceLang.Bulgarian
+            Chinese -> SourceLang.Chinese
             Czech -> SourceLang.Czech
             Danish -> SourceLang.Danish
-            German -> SourceLang.German
-            Greek -> SourceLang.Greek
-            BritishEnglish -> SourceLang.English
-            AmericanEnglish -> SourceLang.English
-            Spanish -> SourceLang.Spanish
+            Dutch -> SourceLang.Dutch
             Estonian -> SourceLang.Estonian
             Finnish -> SourceLang.Finnish
             French -> SourceLang.French
+            German -> SourceLang.German
+            Greek -> SourceLang.Greek
             Hungarian -> SourceLang.Hungarian
             Indonesian -> SourceLang.Indonesian
             Italian -> SourceLang.Italian
             Japanese -> SourceLang.Japanese
-            Lithuanian -> SourceLang.Lithuanian
+            Korean -> SourceLang.Korean
             Latvian -> SourceLang.Latvian
-            Dutch -> SourceLang.Dutch
+            Lithuanian -> SourceLang.Lithuanian
+            Norwegian -> SourceLang.Norwegian
             Polish -> SourceLang.Polish
-            BrazilianPortuguese -> SourceLang.Portuguese
             Portuguese -> SourceLang.Portuguese
             Romanian -> SourceLang.Romanian
             Russian -> SourceLang.Russian
             Slovak -> SourceLang.Slovak
             Slovenian -> SourceLang.Slovenian
+            Spanish -> SourceLang.Spanish
             Swedish -> SourceLang.Swedish
             Turkish -> SourceLang.Turkish
             Ukrainian -> SourceLang.Ukrainian
-            Chinese -> SourceLang.Chinese
         }
     }
 
