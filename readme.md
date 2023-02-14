@@ -33,8 +33,10 @@ TransL supports all languages DeepL supports. Currently, that's these:
 *   Indonesian
 *   Italian
 *   Japanese
+*   Korean
 *   Latvian
 *   Lithuanian
+*   Norwegian
 *   Polish
 *   Portuguese (translating *to* Portuguese, you can choose between Portuguese for Portugal or Brazil)
 *   Romanian
