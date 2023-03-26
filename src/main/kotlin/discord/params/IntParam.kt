@@ -3,7 +3,7 @@ package discord.params
 import TranslationRepo
 import deepl.SourceLang
 import dev.kord.common.Locale
-import dev.kord.core.behavior.interaction.suggestInt
+import dev.kord.core.behavior.interaction.suggestInteger
 import dev.kord.core.entity.interaction.AutoCompleteInteraction
 import dev.kord.rest.builder.interaction.IntegerOptionBuilder
 import discord.localizeDescription
@@ -40,7 +40,7 @@ class IntParam(
 
         val userLocale = interaction.locale ?: Locale.ENGLISH_UNITED_STATES
 
-        interaction.suggestInt {
+        interaction.suggestInteger {
             for (suggestion in suggester.invoke(interaction.focusedOption.value).take(25)) {
                 val suggestionName = suggestion.name.toTitleSpaceCase()
 
