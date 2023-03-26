@@ -61,6 +61,7 @@ Please read the [Terms of Service](legal.md#terms-of-service) before adding the 
 *   A PostgreSQL database (running locally or on a server)
 *   IntelliJ IDEA (recommended, but other IDEs/editors will work too)
 
+### Steps
 1.  [Create a Discord Application](https://discord.com/developers/applications) and add a bot user to it.
     Make sure to save the bot token somewhere secure.
 2.  [Create a DeepL Developer Account](https://www.deepl.com/pro#developer). The free tier will be more than enough.
@@ -91,21 +92,27 @@ Please read the [Terms of Service](legal.md#terms-of-service) before adding the 
     # You can get this by enabling Developer Mode in your Discord settings (under Advanced) and then right-clicking a guild.
     TRANSL_TEST_GUILD="..."
     ```
-5.  You can now start developing TransL! 🎉
+5.  You can now start developing TransL!
 
 ### Important note
 When you first start TransL, it will try to translate all commands, parameters, choices, etc. to all languages.
 This can take a few minutes and will use up about 17500 characters off of your DeepL budget.
 All translations are cached persistently, so all later startups won't take nearly as long, and will not call DeepL anymore.
 
+### Deployment
+You *can* deploy TransL by simply executing `./gradlew run` on a server, but there are downsides.
+Most importantly, if a Daemon cannot be used (such as when using Systemd), startup times are going to be rather long.
+You can avoid this by instead running `./gradlew installDist`, to produce a single shell script that can be used to run TransL.
+
 ### Some useful Gradle commands
 If you're using an IDE, you might not need these, but if you're running the Gradle Wrapper manually, you will.
 Run them by executing `./gradlew <command>` (or `./gradlew.bat <command>` on Windows).
-| command | what it does                                                                                                |
-| ------: | :---------------------------------------------------------------------------------------------------------- |
-|  `jar`  | builds and packages TransL into a JAR file, which you can distribute, upload to a server, or whatever else. |
-| `check` | runs all automated tests in the project, to make sure everything is working as it should.                   |
-| `build` | does all of the above.                                                                                      |
-| `clean` | cleans the project's build directory and the build cache. Useful when some weird behavior/error arises.     |
-|  `run`  | builds and runs the project.                                                                                |
-|  `help` | shows a list of all available commands.                                                                     |
+|       command | what it does                                                                                                |
+| ------------: | :---------------------------------------------------------------------------------------------------------- |
+|         `jar` | builds and packages TransL into a JAR file, which you can distribute, upload to a server, or whatever else. |
+|       `check` | runs all automated tests in the project, to make sure everything is working as it should.                   |
+|       `build` | does all of the above.                                                                                      |
+|       `clean` | cleans the project's build directory and the build cache. Useful when some weird behavior/error arises.     |
+|         `run` | builds and runs the project.                                                                                |
+|        `help` | shows a list of all available commands.                                                                     |
+| `installDist` | builds the project and produces shell scripts to run it effortlessly.                                       |
