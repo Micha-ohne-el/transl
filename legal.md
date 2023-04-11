@@ -15,7 +15,7 @@ In an effort to improve TransL over time, we (the developers of TransL) reserve 
 to store logs of the usage of TransL for up to 31 days.  
 This includes the form of usage being performed and all associated parameters, such as the text being translated.
 
-To provide the service, the developers of TransL may store permanently any translation being transformed.  
+To provide the service, the developers of TransL may store permanently any translation being performed.  
 The metadata associated with a translation is: source language, target language, source text, target text.
 
 To provide the service, the developers of TransL may store permanently any additional data you willfully provide to TransL,
