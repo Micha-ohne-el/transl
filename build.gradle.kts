@@ -14,7 +14,7 @@ repositories {
 
 dependencies {
     implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
-    implementation("dev.kord:kord-core:0.8.1")
+    implementation("dev.kord:kord-core:0.8.3")
     implementation("io.ktor:ktor-client-logging:2.2.2")
     implementation("io.ktor:ktor-client-content-negotiation:2.2.2")
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.2.2")
