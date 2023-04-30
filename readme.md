@@ -1,6 +1,6 @@
 <img src="https://cdn.discordapp.com/app-icons/1012790735151583302/434fa2f4e66cda479124b1e5ca890e6b.png?size=128" align="left">
 
-# TransL
+# TransL [<img src="https://img.shields.io/endpoint?schemaVersion=1&label=Support%20me&color=FF424D&namedLogo=Patreon&style=for-the-badge&url=https://shieldsio-patreon.vercel.app/api/?username=Micha_ohne_el&type=pledges" align="right">](https://patreon.com/Micha_ohne_el)
 A Discord bot that allows people from all over the world to communicate!  
 It uses the excellent [DeepL Translator](https://deepl.com) for maximum translation accuracy.
 
