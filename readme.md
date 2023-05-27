@@ -107,6 +107,7 @@ All translations are cached persistently, so all later startups won't take nearl
 1.  Docker & Docker Compose
 
 ### Steps
-1.  `docker compose build`
-2.  `docker compose up`
-3.  All hail Docker 🙏
+1.  Change `TRANSL_DB_HOST="localhost:5432"` to `TRANSL_DB_HOST="db:5432"` in `.env`
+2.  `docker compose build`
+3.  `docker compose up`
+4.  All hail Docker 🙏
