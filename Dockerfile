@@ -5,7 +5,6 @@ COPY settings.gradle.kts ./
 COPY src/ ./src/
 
 RUN gradle --no-daemon installDist
-COPY build/ ./build/
 
 COPY .env ./.env
 CMD ["build/install/transl/bin/transl"]
