@@ -1,0 +1,23 @@
+services:
+  bot:
+    build: .
+    ports:
+      - 443
+    restart: unless-stopped
+    env_file: .env
+    networks:
+      - private
+      - public
+
+  db:
+    image: postgres:15.3
+    restart: unless-stopped
+    env_file: .env
+    networks:
+      - private
+
+networks:
+  public:
+
+  private:
+    internal: true

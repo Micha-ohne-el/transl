@@ -80,12 +80,15 @@ Please read the [Terms of Service](legal.md#terms-of-service) before adding the 
 
     # The name of the database.
     TRANSL_DB_NAME="transl"
+    POSTGRES_DB="transl"
 
     # The username of the database user.
     TRANSL_DB_USERNAME="transl"
+    POSTGRES_USER="transl"
 
     # The password of the database user.
     TRANSL_DB_PASSWORD="..."
+    POSTGRES_PASSWORD="..."
 
     # The Guild ID used for testing. If set, the bot will register all commands only to this guild, instead of globally.
     # This is important for testing, because guild commands update instantly, as opposed to global commands, which take up to 1 hour.
@@ -99,20 +102,11 @@ When you first start TransL, it will try to translate all commands, parameters, 
 This can take a few minutes and will use up about 17500 characters off of your DeepL budget.
 All translations are cached persistently, so all later startups won't take nearly as long, and will not call DeepL anymore.
 
-### Deployment
-You *can* deploy TransL by simply executing `./gradlew run` on a server, but there are downsides.
-Most importantly, if a Daemon cannot be used (such as when using Systemd), startup times are going to be rather long.
-You can avoid this by instead running `./gradlew installDist`, to produce a single shell script that can be used to run TransL.
+## Deployment
+### Prerequisites
+1.  Docker & Docker Compose
 
-### Some useful Gradle commands
-If you're using an IDE, you might not need these, but if you're running the Gradle Wrapper manually, you will.
-Run them by executing `./gradlew <command>` (or `./gradlew.bat <command>` on Windows).
-|       command | what it does                                                                                                |
-| ------------: | :---------------------------------------------------------------------------------------------------------- |
-|         `jar` | builds and packages TransL into a JAR file, which you can distribute, upload to a server, or whatever else. |
-|       `check` | runs all automated tests in the project, to make sure everything is working as it should.                   |
-|       `build` | does all of the above.                                                                                      |
-|       `clean` | cleans the project's build directory and the build cache. Useful when some weird behavior/error arises.     |
-|         `run` | builds and runs the project.                                                                                |
-|        `help` | shows a list of all available commands.                                                                     |
-| `installDist` | builds the project and produces shell scripts to run it effortlessly.                                       |
+### Steps
+1.  `docker compose build`
+2.  `docker compose up`
+3.  All hail Docker 🙏
