@@ -1,0 +1,14 @@
+{
+	"name": "transl",
+	"scripts": {
+		"check-linting": "biome lint",
+		"check-formatting": "biome format",
+		"check-code": "biome check",
+		"fix-linting": "biome lint --write",
+		"fix-formatting": "biome format --write",
+		"fix-code": "biome check --write"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4"
+	}
+}
