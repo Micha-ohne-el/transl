@@ -1,11 +1,8 @@
-import { Client, Events } from "discord.js";
+import { SapphireClient } from "@sapphire/framework";
+import { environment } from "./environment";
 
-const client = new Client({
+const client = new SapphireClient({
 	intents: [],
 });
 
-client.once(Events.ClientReady, client => {
-	console.log(`Logged in as ${client.user.tag}.`);
-});
-
-await client.login(process.env.DISCORD_BOT_TOKEN);
+await client.login(environment.botToken);

@@ -2,6 +2,7 @@
 	"name": "transl-bot",
 	"module": "index.ts",
 	"type": "module",
+	"main": "src/index.ts",
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
 		"@types/bun": "latest"
@@ -10,6 +11,7 @@
 		"typescript": "^5.0.0"
 	},
 	"dependencies": {
+		"@sapphire/framework": "^5.3.2",
 		"discord.js": "^14.17.3"
 	}
 }
