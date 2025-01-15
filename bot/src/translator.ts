@@ -20,7 +20,11 @@ class Translator {
 		console.debug(`[#${index}]`, "Attempting translation.", { text, sourceLang, targetLang });
 
 		try {
-			const result = await this.deeplTranslator.translateText(text, sourceLang ?? null, targetLang ?? "en-US"); // TODO: Guild langs (needs config module).
+			// TODO: Guild langs (needs config module):
+			const result = await this.deeplTranslator.translateText(text, sourceLang ?? null, targetLang ?? "en-US", {
+				formality: "prefer_less",
+				preserveFormatting: true,
+			});
 
 			console.info(`[#${index}]`, "Translation result:", result);
 
