@@ -10,7 +10,11 @@ import { environment } from "./environment";
 import { Memo } from "./utils/memo";
 
 export class Translator {
-	async translate(text: string, sourceLang?: SourceLanguageCode, targetLang?: TargetLanguageCode): Promise<string> {
+	async translate(
+		text: string,
+		sourceLang?: SourceLanguageCode | null,
+		targetLang?: TargetLanguageCode | null,
+	): Promise<string> {
 		console.debug("Attempting translation.", { text, sourceLang, targetLang });
 
 		try {

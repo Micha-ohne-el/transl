@@ -74,8 +74,8 @@ export class TranslateCommand extends Command {
 		const reply = await interaction.deferReply();
 
 		const message = interaction.options.getString("message", true);
-		const sourceLang = (interaction.options.getString("source_language") as SourceLanguageCode) ?? "";
-		const targetLang = (interaction.options.getString("target_language") as TargetLanguageCode) ?? "en-US";
+		const sourceLang = interaction.options.getString("source_language") as SourceLanguageCode;
+		const targetLang = interaction.options.getString("target_language") as TargetLanguageCode;
 
 		console.debug("Options:", { message, sourceLang, targetLang });
 
