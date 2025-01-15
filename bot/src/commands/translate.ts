@@ -1,12 +1,5 @@
 import { type ApplicationCommandRegistry, Command } from "@sapphire/framework";
-import {
-	DeepLError,
-	type Language,
-	type SourceLanguageCode,
-	type TargetLanguageCode,
-	type TextResult,
-	Translator,
-} from "deepl-node";
+import type { Language, SourceLanguageCode, TargetLanguageCode } from "deepl-node";
 import type { ApplicationCommandOptionChoiceData } from "discord.js";
 import {
 	type AutocompleteInteraction,
@@ -16,7 +9,7 @@ import {
 } from "discord.js";
 import Fuse from "fuse.js";
 import { environment } from "../environment";
-import { Memo } from "../utils/memo";
+import { Translator } from "../translator";
 
 export class TranslateCommand extends Command {
 	public constructor(context: Command.LoaderContext, options: Command.Options) {
@@ -65,9 +58,9 @@ export class TranslateCommand extends Command {
 		const focusedOption = interaction.options.getFocused(true);
 
 		if (focusedOption.name === "source_language") {
-			await interaction.respond(this.findMatchingLanguages(await this.sourceLangs.value, focusedOption.value));
+			await interaction.respond(this.findMatchingLanguages(await this.translator.sourceLangs.value, focusedOption.value));
 		} else if (focusedOption.name === "target_language") {
-			await interaction.respond(this.findMatchingLanguages(await this.targetLangs.value, focusedOption.value));
+			await interaction.respond(this.findMatchingLanguages(await this.translator.targetLangs.value, focusedOption.value));
 		} else {
 			console.warn("Autocomplete interaction received for option that doesn't have autocomplete.", {
 				interaction,
@@ -86,9 +79,8 @@ export class TranslateCommand extends Command {
 
 		console.debug("Options:", { message, sourceLang, targetLang });
 
-		let translationResult: TextResult;
 		try {
-			translationResult = await this.translator.translateText(message, sourceLang, targetLang);
+			await reply.edit(await this.translator.translate(message, sourceLang, targetLang));
 		} catch (e) {
 			await Promise.all([
 				reply.delete(),
@@ -105,31 +97,9 @@ export class TranslateCommand extends Command {
 			]);
 			return;
 		}
-
-		console.debug("Translation result:", translationResult);
-
-		await reply.edit(translationResult.text);
 	}
 
-	private readonly translator = new Translator(environment.deeplAuthToken);
-
-	private readonly sourceLangs = new Memo(() => {
-		console.log("Getting source languages and memoizing them for 24 hours...");
-
-		return {
-			value: this.translator.getSourceLanguages(),
-			validUntil: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
-		};
-	});
-
-	private readonly targetLangs = new Memo(() => {
-		console.log("Getting target languages and memoizing them for 24 hours...");
-
-		return {
-			value: this.translator.getTargetLanguages(),
-			validUntil: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
-		};
-	});
+	private readonly translator = new Translator();
 
 	private findMatchingLanguages(languages: readonly Language[], partialName: string): ApplicationCommandOptionChoiceData[] {
 		console.debug("Finding matching languages.", { partialName, languages });
