@@ -15,24 +15,26 @@ class Translator {
 		sourceLang?: SourceLanguageCode | null,
 		targetLang?: TargetLanguageCode | null,
 	): Promise<string> {
-		console.debug("Attempting translation.", { text, sourceLang, targetLang });
+		const index = this.index++;
+
+		console.debug(`[#${index}]`, "Attempting translation.", { text, sourceLang, targetLang });
 
 		try {
 			const result = await this.deeplTranslator.translateText(text, sourceLang ?? null, targetLang ?? "en-US"); // TODO: Guild langs (needs config module).
 
-			console.info("Translation result:", result);
+			console.info(`[#${index}]`, "Translation result:", result);
 
 			return result.text;
 		} catch (e) {
-			console.error("An error occurred during tanslation!");
+			console.error(`[#${index}]`, "An error occurred during tanslation!");
 
 			// TODO: these should be recorded in some logging tool like Sentry:
 			if (e instanceof TooManyRequestsError) {
-				console.error("Too many requests against the DeepL API!", e.message);
+				console.error(`[#${index}]`, "Too many requests against the DeepL API!", e.message);
 			} else if (e instanceof QuotaExceededError) {
-				console.error("Translation quota exceeded!", e.message);
+				console.error(`[#${index}]`, "Translation quota exceeded!", e.message);
 			} else if (e instanceof DeepLError) {
-				console.error(e.name, e.message);
+				console.error(`[#${index}]`, e.name, e.message);
 			}
 
 			throw e;
@@ -58,6 +60,8 @@ class Translator {
 			validUntil: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
 		};
 	});
+
+	private index = 0;
 }
 
 export const translator = new Translator();
