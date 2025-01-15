@@ -9,7 +9,7 @@ import {
 import { environment } from "./environment";
 import { Memo } from "./utils/memo";
 
-export class Translator {
+class Translator {
 	async translate(
 		text: string,
 		sourceLang?: SourceLanguageCode | null,
@@ -59,3 +59,5 @@ export class Translator {
 		};
 	});
 }
+
+export const translator = new Translator();

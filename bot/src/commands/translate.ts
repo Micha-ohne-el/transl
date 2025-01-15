@@ -9,7 +9,8 @@ import {
 } from "discord.js";
 import Fuse from "fuse.js";
 import { environment } from "../environment";
-import { Translator } from "../translator";
+import { translator } from "../translator";
+import { strings } from "../strings";
 
 export class TranslateCommand extends Command {
 	public constructor(context: Command.LoaderContext, options: Command.Options) {
@@ -58,9 +59,9 @@ export class TranslateCommand extends Command {
 		const focusedOption = interaction.options.getFocused(true);
 
 		if (focusedOption.name === "source_language") {
-			await interaction.respond(this.findMatchingLanguages(await this.translator.sourceLangs.value, focusedOption.value));
+			await interaction.respond(this.findMatchingLanguages(await translator.sourceLangs.value, focusedOption.value));
 		} else if (focusedOption.name === "target_language") {
-			await interaction.respond(this.findMatchingLanguages(await this.translator.targetLangs.value, focusedOption.value));
+			await interaction.respond(this.findMatchingLanguages(await translator.targetLangs.value, focusedOption.value));
 		} else {
 			console.warn("Autocomplete interaction received for option that doesn't have autocomplete.", {
 				interaction,
@@ -80,7 +81,7 @@ export class TranslateCommand extends Command {
 		console.debug("Options:", { message, sourceLang, targetLang });
 
 		try {
-			await reply.edit(await this.translator.translate(message, sourceLang, targetLang));
+			await reply.edit(await translator.translate(message, sourceLang, targetLang));
 		} catch (e) {
 			await Promise.all([
 				reply.delete(),
@@ -89,8 +90,8 @@ export class TranslateCommand extends Command {
 					embeds: [
 						{
 							color: 0xed4245,
-							title: "Sorry",
-							description: "An error occurred, please try again later.",
+							title: strings.error.generic.title.get(interaction.locale),
+							description: strings.error.generic.description.get(interaction.locale),
 						},
 					],
 				}),
@@ -98,8 +99,6 @@ export class TranslateCommand extends Command {
 			return;
 		}
 	}
-
-	private readonly translator = new Translator();
 
 	private findMatchingLanguages(languages: readonly Language[], partialName: string): ApplicationCommandOptionChoiceData[] {
 		console.debug("Finding matching languages.", { partialName, languages });
