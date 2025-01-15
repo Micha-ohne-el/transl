@@ -1,8 +1,10 @@
 import { raise } from "./utils/raise";
+import { bot } from "../../config.json";
 
 export const environment = {
-	botToken: process.env.DISCORD_BOT_TOKEN ?? raise("DISCORD_BOT_TOKEN is unset!"),
-	clientId: process.env.DISCORD_CLIENT_ID ?? raise("DISCORD_CLIENT_ID is unset!"),
-	testGuildId: process.env.DISCORD_TEST_GUILD ?? raise("DISCORD_TEST_GUILD is unset!"),
-	deeplAuthToken: process.env.DEEPL_AUTH_TOKEN ?? raise("DEEPL_AUTH_TOKEN is unset!"),
+	botToken: bot.discord.botToken ?? raise("No bot token specified in config.json!"),
+	clientId: bot.discord.clientId ?? raise("No client ID specified in config.json!"),
+	testGuildId: bot.discord.testGuildId,
+	adminIds: bot.discord.adminIds ?? raise("No admin IDs specified in config.json!"),
+	deeplAuthToken: bot.deepl.authToken ?? raise("No DeepL auth token specified in config.json!"),
 };
