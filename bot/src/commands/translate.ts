@@ -1,7 +1,19 @@
 import { type ApplicationCommandRegistry, Command } from "@sapphire/framework";
-import { type Language, type SourceLanguageCode, type TargetLanguageCode, type TextResult, Translator } from "deepl-node";
+import {
+	DeepLError,
+	type Language,
+	type SourceLanguageCode,
+	type TargetLanguageCode,
+	type TextResult,
+	Translator,
+} from "deepl-node";
 import type { ApplicationCommandOptionChoiceData } from "discord.js";
-import { type AutocompleteInteraction, type ChatInputCommandInteraction, InteractionContextType } from "discord.js";
+import {
+	type AutocompleteInteraction,
+	type ChatInputCommandInteraction,
+	InteractionContextType,
+	MessageFlags,
+} from "discord.js";
 import Fuse from "fuse.js";
 import { environment } from "../environment";
 import { Memo } from "../utils/memo";
@@ -78,8 +90,20 @@ export class TranslateCommand extends Command {
 		try {
 			translationResult = await this.translator.translateText(message, sourceLang, targetLang);
 		} catch (e) {
-			await reply.delete(); // TODO: proper error handling?
-			throw e;
+			await Promise.all([
+				reply.delete(),
+				interaction.followUp({
+					flags: MessageFlags.Ephemeral,
+					embeds: [
+						{
+							color: 0xed4245,
+							title: "Sorry",
+							description: "An error occurred, please try again later.",
+						},
+					],
+				}),
+			]);
+			return;
 		}
 
 		console.debug("Translation result:", translationResult);
