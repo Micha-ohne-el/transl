@@ -9,20 +9,16 @@ import {
 import { environment } from "./environment";
 
 export class Translator {
-	async translate(
-		text: string,
-		sourceLang?: SourceLanguageCode | null,
-		targetLang?: TargetLanguageCode | null,
-	): Promise<string> {
+	async translate({ sourceLang, targetLang, sourceText, context }: Translate): Promise<string> {
 		const index = this.index++;
 
-		console.debug(`[translation #${index}]`, "Attempting translation.", { text, sourceLang, targetLang });
+		console.debug(`[translation #${index}]`, "Attempting translation.", { sourceText, sourceLang, targetLang });
 
 		try {
-			// TODO: Guild langs (needs config module):
-			const result = await this.deeplTranslator.translateText(text, sourceLang ?? null, targetLang ?? "en-US", {
+			const result = await this.deeplTranslator.translateText(sourceText, sourceLang ?? null, targetLang ?? "en-US", {
 				formality: "prefer_less",
 				preserveFormatting: true,
+				context,
 			});
 
 			console.info(`[translation #${index}]`, "Translation result:", result);
@@ -47,4 +43,11 @@ export class Translator {
 	private index = 1;
 
 	private deeplTranslator = new DeeplTranslator(environment.deepl.authToken);
+}
+
+interface Translate {
+	sourceLang?: SourceLanguageCode;
+	targetLang: TargetLanguageCode;
+	sourceText: string;
+	context?: string;
 }

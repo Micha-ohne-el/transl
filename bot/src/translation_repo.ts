@@ -13,7 +13,7 @@ class TranslationRepo {
 
 		if (cached) return cached;
 
-		const targetText = await this.translator.translate(sourceText, sourceLang, targetLang);
+		const targetText = await this.translator.translate({ sourceText, sourceLang, targetLang });
 
 		await this.cache.set({ sourceLang, targetLang, sourceText, targetText });
 
