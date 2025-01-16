@@ -47,6 +47,8 @@ export class Cache {
 			});
 
 			if (timeToLiveSeconds) {
+				console.debug(`[cache operation #${index}]`, `Setting expiry to ${timeToLiveSeconds} seconds.`);
+
 				const id = entity[EntityId];
 
 				if (id) {
@@ -54,6 +56,8 @@ export class Cache {
 				} else {
 					console.warn(`[cache operation #${index}]`, "Could not expire cache entry because ID is mysteriously missing!");
 				}
+			} else {
+				console.debug(`[cache operation #${index}]`, "Not setting expiry (infinity).");
 			}
 
 			console.log(`[cache operation #${index}]`, "Saved successfully.");
