@@ -83,7 +83,7 @@ export class TranslateCommand extends Command {
 		console.debug("Options:", { message, sourceLang, targetLang });
 
 		try {
-			await reply.edit(await translationRepo.get(sourceLang, targetLang, message));
+			await reply.edit(await translationRepo.get({ sourceLang, targetLang, sourceText: message }));
 		} catch (e) {
 			await Promise.all([
 				reply.delete(),

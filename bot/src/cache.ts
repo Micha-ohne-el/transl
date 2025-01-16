@@ -46,7 +46,7 @@ export class Cache {
 				targetText,
 			});
 
-			if (timeToLiveSeconds !== undefined) {
+			if (timeToLiveSeconds) {
 				const id = entity[EntityId];
 
 				if (id) {
@@ -107,5 +107,5 @@ interface Set {
 	targetLang: TargetLanguageCode;
 	sourceText: string;
 	targetText: string;
-	timeToLiveSeconds?: number;
+	timeToLiveSeconds?: number | null;
 }

@@ -11,58 +11,75 @@ export const strings = {
 		},
 	},
 	languages: {
-		arabic: await localize("Arabic"),
-		bulgarian: await localize("Bulgarian"),
-		czeck: await localize("Czeck"),
-		danish: await localize("Danish"),
-		german: await localize("German"),
-		greek: await localize("Greek"),
+		arabic: await localizeLanguageName("Arabic"),
+		bulgarian: await localizeLanguageName("Bulgarian"),
+		czeck: await localizeLanguageName("Czeck"),
+		danish: await localizeLanguageName("Danish"),
+		german: await localizeLanguageName("German"),
+		greek: await localizeLanguageName("Greek"),
 		english: {
-			generic: await localize("English"),
-			american: await localize("American English"),
-			british: await localize("British English"),
+			generic: await localizeLanguageName("English"),
+			american: await localizeLanguageName("American English"),
+			british: await localizeLanguageName("British English"),
 		},
-		spanish: await localize("Spanish"),
-		estonian: await localize("Estonian"),
-		finnish: await localize("Finnish"),
-		french: await localize("French"),
-		hungarian: await localize("Hungarian"),
-		indonesian: await localize("Indonesian"),
-		italian: await localize("Italian"),
-		japanese: await localize("Japanese"),
-		korean: await localize("Korean"),
-		lithuanian: await localize("Lithuanian"),
-		latvian: await localize("Latvian"),
-		norwegian: await localize("Norwegian"),
-		dutch: await localize("Dutch"),
-		polish: await localize("Polish"),
+		spanish: await localizeLanguageName("Spanish"),
+		estonian: await localizeLanguageName("Estonian"),
+		finnish: await localizeLanguageName("Finnish"),
+		french: await localizeLanguageName("French"),
+		hungarian: await localizeLanguageName("Hungarian"),
+		indonesian: await localizeLanguageName("Indonesian"),
+		italian: await localizeLanguageName("Italian"),
+		japanese: await localizeLanguageName("Japanese"),
+		korean: await localizeLanguageName("Korean"),
+		lithuanian: await localizeLanguageName("Lithuanian"),
+		latvian: await localizeLanguageName("Latvian"),
+		norwegian: await localizeLanguageName("Norwegian"),
+		dutch: await localizeLanguageName("Dutch"),
+		polish: await localizeLanguageName("Polish"),
 		portuguese: {
-			generic: await localize("Portuguese"),
-			brazilian: await localize("Brazilian Portuguese"),
+			generic: await localizeLanguageName("Portuguese"),
+			brazilian: await localizeLanguageName("Brazilian Portuguese"),
 		},
-		romanian: await localize("Romanian"),
-		russian: await localize("Russian"),
-		slovak: await localize("Slovak"),
-		slovenian: await localize("Slovenian"),
-		swedish: await localize("Swedish"),
-		turkish: await localize("Turkish"),
-		ukranian: await localize("Ukranian"),
+		romanian: await localizeLanguageName("Romanian"),
+		russian: await localizeLanguageName("Russian"),
+		slovak: await localizeLanguageName("Slovak"),
+		slovenian: await localizeLanguageName("Slovenian"),
+		swedish: await localizeLanguageName("Swedish"),
+		turkish: await localizeLanguageName("Turkish"),
+		ukranian: await localizeLanguageName("Ukranian"),
 		chinese: {
-			generic: await localize("Chinese"),
-			traditional: await localize("Traditional Chinese"),
-			simplified: await localize("Simplified Chinese"),
+			generic: await localizeLanguageName("Chinese"),
+			traditional: await localizeLanguageName("Traditional Chinese"),
+			simplified: await localizeLanguageName("Simplified Chinese"),
 		},
 	},
 };
 
-async function localize(text: string): Promise<LocalizedString> {
+async function localize(text: string, options?: LocalizeOptions): Promise<LocalizedString> {
 	const map = new LocalizedString(text);
 
 	await Promise.all(
 		Object.values(Locale).map(async locale => {
-			map.set(locale, await translationRepo.get("en", targetLangs[locale], text));
+			map.set(
+				locale,
+				await translationRepo.get({
+					sourceLang: "en",
+					targetLang: targetLangs[locale],
+					sourceText: text,
+					cacheTimeToLiveSeconds: null,
+					sourceTextContext: options?.context,
+				}),
+			);
 		}),
 	);
 
 	return map;
+}
+
+async function localizeLanguageName(name: string) {
+	return await localize(name, { context: "A widely-recognized language spoken by many people around the world." });
+}
+
+interface LocalizeOptions {
+	context?: string;
 }
