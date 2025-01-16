@@ -11,14 +11,11 @@ export class Cache {
 		console.debug(`[cache operation #${index}]`, "Searching cache:", { sourceLang, targetLang, sourceText });
 
 		try {
-			const result = await repo
-				.search()
-				.where("sourceLang")
-				.equals(sourceLang)
-				.and("targetLang")
-				.equals(targetLang)
-				.and("sourceText")
-				.equals(sourceText)
+			// biome-ignore format: more readable this way
+			const result = await repo.search()
+				.where("sourceLang").equals(sourceLang)
+				.and("targetLang").equals(targetLang)
+				.and("sourceText").equals(sourceText)
 				.return.first();
 
 			if (result) {
