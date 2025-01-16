@@ -13,13 +13,14 @@ import { environment } from "../environment";
 import { strings } from "../strings";
 import { translationRepo } from "../translation_repo";
 import type { LocalizedString } from "../utils/localized_string";
+import { normalizeName } from "../utils/normalize_name";
 
 export class TranslateCommand extends Command {
 	public constructor(context: Command.LoaderContext, options: Command.Options) {
 		super(context, {
 			...options,
-			name: "translate",
-			description: "Translate a message to the chat!",
+			name: normalizeName(strings.commands.translate.name.original),
+			description: strings.commands.translate.description.original,
 		});
 	}
 
@@ -27,26 +28,34 @@ export class TranslateCommand extends Command {
 		registry.registerChatInputCommand(
 			builder => {
 				builder
-					.setName(this.name)
-					.setDescription(this.description)
+					.setName(normalizeName(strings.commands.translate.name.original))
+					.setNameLocalizations(strings.commands.translate.name.getAllNormalized())
+					.setDescription(strings.commands.translate.description.original)
+					.setDescriptionLocalizations(strings.commands.translate.description.getAll())
 					.setContexts(InteractionContextType.Guild, InteractionContextType.BotDM, InteractionContextType.PrivateChannel)
 					.addStringOption(option =>
-						option //
-							.setName("message")
-							.setDescription("The text you want to translate.")
+						option
+							.setName(normalizeName(strings.commands.translate.parameters.message.name.original))
+							.setNameLocalizations(strings.commands.translate.parameters.message.name.getAllNormalized())
+							.setDescription(strings.commands.translate.parameters.message.description.original)
+							.setDescriptionLocalizations(strings.commands.translate.parameters.message.description.getAll())
 							.setRequired(true),
 					)
 					.addStringOption(option =>
 						option
-							.setName("source_language")
-							.setDescription("Your language (automatically detected if omitted).")
+							.setName(normalizeName(strings.commands.translate.parameters.sourceLang.name.original))
+							.setNameLocalizations(strings.commands.translate.parameters.sourceLang.name.getAllNormalized())
+							.setDescription(strings.commands.translate.parameters.sourceLang.description.original)
+							.setDescriptionLocalizations(strings.commands.translate.parameters.sourceLang.description.getAll())
 							.setAutocomplete(true)
 							.setRequired(false),
 					)
 					.addStringOption(option =>
 						option
-							.setName("target_language")
-							.setDescription("The language you want to translate to (the Server's language if omitted).")
+							.setName(normalizeName(strings.commands.translate.parameters.targetLang.name.original))
+							.setNameLocalizations(strings.commands.translate.parameters.targetLang.name.getAllNormalized())
+							.setDescription(strings.commands.translate.parameters.targetLang.description.original)
+							.setDescriptionLocalizations(strings.commands.translate.parameters.targetLang.description.getAll())
 							.setAutocomplete(true)
 							.setRequired(false),
 					);
