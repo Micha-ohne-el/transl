@@ -6,7 +6,9 @@
       "adminIds": [
         "01234567890123456789"
       ],
-      "testGuildId": "01234567890123456789"
+      "testGuildIds": [
+        "01234567890123456789"
+      ]
     },
     "deepl": {
       "authToken": "01234567-89ab-cdef-0123-456789abcdef"

@@ -50,7 +50,7 @@ export class TranslateCommand extends Command {
 					);
 			},
 			{
-				guildIds: [environment.testGuildId],
+				guildIds: environment.testGuildIds,
 			},
 		);
 	}
