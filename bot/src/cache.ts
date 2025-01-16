@@ -3,6 +3,8 @@ import { createClient } from "redis";
 import { type Entity, EntityId, Repository, Schema } from "redis-om";
 import { environment } from "./environment";
 
+const NO_SOURCE_LANG = "NO_SOURCE_LANG";
+
 export class Cache {
 	async get({ sourceLang, targetLang, sourceText }: Get): Promise<string | undefined> {
 		const repo = await this.translationRepo;
@@ -13,7 +15,7 @@ export class Cache {
 		try {
 			// biome-ignore format: more readable this way
 			const result = await repo.search()
-				.where("sourceLang").equals(sourceLang)
+				.where("sourceLang").equals(sourceLang ?? NO_SOURCE_LANG)
 				.and("targetLang").equals(targetLang)
 				.and("sourceText").equals(sourceText)
 				.return.first();
@@ -40,7 +42,7 @@ export class Cache {
 
 		try {
 			const entity = await repo.save({
-				sourceLang,
+				sourceLang: sourceLang ?? NO_SOURCE_LANG,
 				targetLang,
 				sourceText,
 				targetText,
@@ -94,20 +96,20 @@ export class Cache {
 }
 
 interface Translation extends Entity {
-	sourceLang: string;
+	sourceLang?: string;
 	targetLang: string;
 	sourceText: string;
 	targetText: string;
 }
 
 interface Get {
-	sourceLang: SourceLanguageCode;
+	sourceLang?: SourceLanguageCode;
 	targetLang: TargetLanguageCode;
 	sourceText: string;
 }
 
 interface Set {
-	sourceLang: SourceLanguageCode;
+	sourceLang?: SourceLanguageCode;
 	targetLang: TargetLanguageCode;
 	sourceText: string;
 	targetText: string;

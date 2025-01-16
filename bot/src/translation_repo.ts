@@ -24,7 +24,7 @@ class TranslationRepo {
 export const translationRepo = new TranslationRepo(new Translator(), new Cache());
 
 interface Get {
-	sourceLang: SourceLanguageCode;
+	sourceLang?: SourceLanguageCode;
 	targetLang: TargetLanguageCode;
 	sourceText: string;
 	sourceTextContext?: string;
