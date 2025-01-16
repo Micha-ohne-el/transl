@@ -45,7 +45,7 @@ class Translator {
 		}
 	}
 
-	private deeplTranslator = new DeeplTranslator(environment.deeplAuthToken);
+	private deeplTranslator = new DeeplTranslator(environment.deepl.authToken);
 
 	readonly sourceLangs = new Memo(() => {
 		console.log("Getting source languages and memoizing them for 24 hours...");
