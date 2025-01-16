@@ -1,41 +1,7 @@
 import { Locale } from "discord.js";
-import { translator } from "./translator";
-import type { TargetLanguageCode } from "deepl-node";
-
-const targetLangs: Record<Locale, TargetLanguageCode> = {
-	[Locale.Bulgarian]: "bg",
-	[Locale.ChineseCN]: "zh",
-	[Locale.ChineseTW]: "zh",
-	[Locale.Croatian]: "en-GB", // fallback because croatian is not supported by DeepL.
-	[Locale.Czech]: "cs",
-	[Locale.Danish]: "da",
-	[Locale.Dutch]: "nl",
-	[Locale.EnglishGB]: "en-GB",
-	[Locale.EnglishUS]: "en-US",
-	[Locale.Finnish]: "fi",
-	[Locale.French]: "fr",
-	[Locale.German]: "de",
-	[Locale.Greek]: "el",
-	[Locale.Hindi]: "en-GB", // fallback beause hindi is not supported by DeepL.
-	[Locale.Hungarian]: "hu",
-	[Locale.Indonesian]: "id",
-	[Locale.Italian]: "it",
-	[Locale.Japanese]: "ja",
-	[Locale.Korean]: "ko",
-	[Locale.Lithuanian]: "lt",
-	[Locale.Norwegian]: "nb",
-	[Locale.Polish]: "pl",
-	[Locale.PortugueseBR]: "pt-BR",
-	[Locale.Romanian]: "ro",
-	[Locale.Russian]: "ru",
-	[Locale.SpanishES]: "es",
-	[Locale.SpanishLATAM]: "es",
-	[Locale.Swedish]: "sv",
-	[Locale.Thai]: "en-GB", // fallback because thai is not supported by DeepL.
-	[Locale.Turkish]: "tr",
-	[Locale.Ukrainian]: "uk",
-	[Locale.Vietnamese]: "en-GB", // fallback because vietnamese is not supported by DeepL.
-};
+import { translationRepo } from "./translation_repo";
+import { targetLangs } from "./utils/langs";
+import { LocalizedString } from "./utils/localized_string";
 
 export const strings = {
 	error: {
@@ -44,14 +10,57 @@ export const strings = {
 			description: await localize("An error occurred, please try again later."),
 		},
 	},
+	languages: {
+		arabic: await localize("Arabic"),
+		bulgarian: await localize("Bulgarian"),
+		czeck: await localize("Czeck"),
+		danish: await localize("Danish"),
+		german: await localize("German"),
+		greek: await localize("Greek"),
+		english: {
+			generic: await localize("English"),
+			american: await localize("American English"),
+			british: await localize("British English"),
+		},
+		spanish: await localize("Spanish"),
+		estonian: await localize("Estonian"),
+		finnish: await localize("Finnish"),
+		french: await localize("French"),
+		hungarian: await localize("Hungarian"),
+		indonesian: await localize("Indonesian"),
+		italian: await localize("Italian"),
+		japanese: await localize("Japanese"),
+		korean: await localize("Korean"),
+		lithuanian: await localize("Lithuanian"),
+		latvian: await localize("Latvian"),
+		norwegian: await localize("Norwegian"),
+		dutch: await localize("Dutch"),
+		polish: await localize("Polish"),
+		portuguese: {
+			generic: await localize("Portuguese"),
+			brazilian: await localize("Brazilian Portuguese"),
+		},
+		romanian: await localize("Romanian"),
+		russian: await localize("Russian"),
+		slovak: await localize("Slovak"),
+		slovenian: await localize("Slovenian"),
+		swedish: await localize("Swedish"),
+		turkish: await localize("Turkish"),
+		ukranian: await localize("Ukranian"),
+		chinese: {
+			generic: await localize("Chinese"),
+			traditional: await localize("Traditional Chinese"),
+			simplified: await localize("Simplified Chinese"),
+		},
+	},
 };
 
-async function localize(text: string): Promise<Map<Locale, string>> {
-	const map = new Map<Locale, string>();
+async function localize(text: string): Promise<LocalizedString> {
+	const map = new LocalizedString(text);
 
 	await Promise.all(
 		Object.values(Locale).map(async locale => {
-			map.set(locale, await translator.translate(text, "en", targetLangs[locale]));
+			map.set(locale, await translationRepo.get("en", targetLangs[locale], text));
 		}),
 	);
 

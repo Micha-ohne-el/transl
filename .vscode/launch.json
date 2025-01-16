@@ -1,0 +1,15 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"type": "bun",
+			"request": "launch",
+			"name": "Debug Bot",
+			"program": "src/index.ts",
+			"cwd": "${workspaceFolder}/bot",
+			"stopOnEntry": false,
+			"watchMode": false,
+			"internalConsoleOptions": "neverOpen"
+		}
+	]
+}
