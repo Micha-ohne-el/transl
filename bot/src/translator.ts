@@ -65,7 +65,7 @@ class Translator {
 		};
 	});
 
-	private index = 0;
+	private index = 1;
 }
 
 export const translator = new Translator();
