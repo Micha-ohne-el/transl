@@ -9,13 +9,13 @@ class TranslationRepo {
 	) {}
 
 	async get(sourceLang: SourceLanguageCode, targetLang: TargetLanguageCode, sourceText: string): Promise<string> {
-		const cached = await this.cache.get(sourceLang, targetLang, sourceText);
+		const cached = await this.cache.get({ sourceLang, targetLang, sourceText });
 
 		if (cached) return cached;
 
 		const targetText = await this.translator.translate(sourceText, sourceLang, targetLang);
 
-		await this.cache.set(sourceLang, targetLang, sourceText, targetText);
+		await this.cache.set({ sourceLang, targetLang, sourceText, targetText });
 
 		return targetText;
 	}

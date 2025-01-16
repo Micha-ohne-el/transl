@@ -4,7 +4,7 @@ import { type Entity, EntityId, Repository, Schema } from "redis-om";
 import { environment } from "./environment";
 
 export class Cache {
-	async get(sourceLang: SourceLanguageCode, targetLang: TargetLanguageCode, sourceText: string): Promise<string | undefined> {
+	async get({ sourceLang, targetLang, sourceText }: Get): Promise<string | undefined> {
 		const repo = await this.translationRepo;
 
 		const index = this.index++;
@@ -31,12 +31,8 @@ export class Cache {
 		}
 	}
 
-	async set(
-		sourceLang: SourceLanguageCode,
-		targetLang: TargetLanguageCode,
-		sourceText: string,
-		targetText: string,
-	): Promise<void> {
+	/// by default a cached translation is valid for 30 days.
+	async set({ sourceLang, targetLang, sourceText, targetText, timeToLiveSeconds = 30 * 24 * 60 * 60 }: Set): Promise<void> {
 		const repo = await this.translationRepo;
 
 		const index = this.index++;
@@ -50,12 +46,14 @@ export class Cache {
 				targetText,
 			});
 
-			const id = entity[EntityId];
+			if (timeToLiveSeconds !== undefined) {
+				const id = entity[EntityId];
 
-			if (id) {
-				await repo.expire(id, 10); // TODO: obviously 10 seconds is stupid.
-			} else {
-				console.warn(`[cache operation #${index}]`, "Could not set expiry on cache entry because ID is mysteriously missing!");
+				if (id) {
+					await repo.expire(id, timeToLiveSeconds);
+				} else {
+					console.warn(`[cache operation #${index}]`, "Could not expire cache entry because ID is mysteriously missing!");
+				}
 			}
 
 			console.log(`[cache operation #${index}]`, "Saved successfully.");
@@ -96,4 +94,18 @@ interface Translation extends Entity {
 	targetLang: string;
 	sourceText: string;
 	targetText: string;
+}
+
+interface Get {
+	sourceLang: SourceLanguageCode;
+	targetLang: TargetLanguageCode;
+	sourceText: string;
+}
+
+interface Set {
+	sourceLang: SourceLanguageCode;
+	targetLang: TargetLanguageCode;
+	sourceText: string;
+	targetText: string;
+	timeToLiveSeconds?: number;
 }
