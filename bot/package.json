@@ -4,19 +4,19 @@
 	"type": "module",
 	"main": "src/index.ts",
 	"devDependencies": {
-		"@biomejs/biome": "1.9.4",
-		"@types/bun": "latest"
+		"@biomejs/biome": "^1.9.4",
+		"@types/bun": "1.2.3"
 	},
 	"peerDependencies": {
-		"typescript": "^5.0.0"
+		"typescript": "^5.7.3"
 	},
 	"dependencies": {
-		"@logtape/logtape": "^0.8.1",
+		"@logtape/logtape": "^0.8.2",
 		"@logtape/otel": "^0.2.0",
 		"@sapphire/framework": "^5.3.2",
-		"deepl-node": "^1.15.0",
-		"discord.js": "^14.17.3",
-		"fuse.js": "^7.0.0",
+		"deepl-node": "^1.16.0",
+		"discord.js": "^14.18.0",
+		"fuse.js": "^7.1.0",
 		"redis": "^4.7.0",
 		"redis-om": "^0.4.7"
 	}

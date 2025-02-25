@@ -1,6 +1,13 @@
-import * as Deepl from "deepl-node";
 import { getLogger } from "@logtape/logtape";
 import type { DeeplTranslatorConfig, TranslatorConfig } from "../../Config";
+import {
+	DeepLClient,
+	DeepLError,
+	QuotaExceededError,
+	TooManyRequestsError,
+	type SourceLanguageCode,
+	type TargetLanguageCode,
+} from "deepl-node";
 
 const logger = getLogger(["transl", "translator"]);
 
@@ -17,7 +24,7 @@ export interface Translator {
 
 export class DeeplTranslator implements Translator {
 	constructor(config: DeeplTranslatorConfig) {
-		this.deeplTranslator = new Deepl.Translator(config.authToken);
+		this.deeplClient = new DeepLClient(config.authToken);
 	}
 
 	async translate({ sourceLang, targetLang, sourceText, context }: Translate): Promise<string> {
@@ -26,7 +33,7 @@ export class DeeplTranslator implements Translator {
 		log.debug("Attempting translation");
 
 		try {
-			const result = await this.deeplTranslator.translateText(sourceText, sourceLang ?? null, targetLang ?? "en-US", {
+			const result = await this.deeplClient.translateText(sourceText, sourceLang ?? null, targetLang ?? "en-US", {
 				formality: "prefer_less",
 				preserveFormatting: true,
 				context,
@@ -36,11 +43,11 @@ export class DeeplTranslator implements Translator {
 
 			return result.text;
 		} catch (error) {
-			if (error instanceof Deepl.TooManyRequestsError) {
+			if (error instanceof TooManyRequestsError) {
 				log.error("Too many requests against the DeepL API!", { error });
-			} else if (error instanceof Deepl.QuotaExceededError) {
+			} else if (error instanceof QuotaExceededError) {
 				log.error("Translation quota exceeded!", { error });
-			} else if (error instanceof Deepl.DeepLError) {
+			} else if (error instanceof DeepLError) {
 				log.error("An error occurred during translation", { error });
 			}
 
@@ -48,14 +55,14 @@ export class DeeplTranslator implements Translator {
 		}
 	}
 
-	private readonly deeplTranslator: Deepl.Translator;
+	private readonly deeplClient: DeepLClient;
 
 	private index = 1;
 }
 
 interface Translate {
-	sourceLang?: Deepl.SourceLanguageCode;
-	targetLang: Deepl.TargetLanguageCode;
+	sourceLang?: SourceLanguageCode;
+	targetLang: TargetLanguageCode;
 	sourceText: string;
 	context?: string;
 }
