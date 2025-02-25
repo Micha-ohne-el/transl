@@ -11,6 +11,8 @@
 		"typescript": "^5.0.0"
 	},
 	"dependencies": {
+		"@logtape/logtape": "^0.8.1",
+		"@logtape/otel": "^0.2.0",
 		"@sapphire/framework": "^5.3.2",
 		"deepl-node": "^1.15.0",
 		"discord.js": "^14.17.3",

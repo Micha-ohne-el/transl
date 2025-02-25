@@ -1,4 +1,5 @@
 import * as Deepl from "deepl-node";
+import { getLogger } from "@logtape/logtape";
 import type { DeeplTranslatorConfig, TranslatorConfig } from "../../Config";
 
 const logger = getLogger(["transl", "translator"]);
@@ -20,9 +21,9 @@ export class DeeplTranslator implements Translator {
 	}
 
 	async translate({ sourceLang, targetLang, sourceText, context }: Translate): Promise<string> {
-		const index = this.index++;
+		const log = logger.with({ id: this.index++, sourceLang, targetLang, sourceText, context });
 
-		console.debug(`[translation #${index}]`, "Attempting translation.", { sourceText, sourceLang, targetLang });
+		log.debug("Attempting translation");
 
 		try {
 			const result = await this.deeplTranslator.translateText(sourceText, sourceLang ?? null, targetLang ?? "en-US", {
@@ -31,16 +32,16 @@ export class DeeplTranslator implements Translator {
 				context,
 			});
 
-			console.info(`[translation #${index}]`, "Translation result:", result);
+			log.info("Translation succeeded", { result });
 
 			return result.text;
 		} catch (error) {
 			if (error instanceof Deepl.TooManyRequestsError) {
-				console.error(`[translation #${index}]`, "Too many requests against the DeepL API!", error.message);
+				log.error("Too many requests against the DeepL API!", { error });
 			} else if (error instanceof Deepl.QuotaExceededError) {
-				console.error(`[translation #${index}]`, "Translation quota exceeded!", error.message);
+				log.error("Translation quota exceeded!", { error });
 			} else if (error instanceof Deepl.DeepLError) {
-				console.error(`[translation #${index}]`, error.name, error.message);
+				log.error("An error occurred during translation", { error });
 			}
 
 			throw error;

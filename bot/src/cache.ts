@@ -1,9 +1,12 @@
 import type { SourceLanguageCode, TargetLanguageCode } from "deepl-node";
 import { createClient } from "redis";
 import { type Entity, EntityId, Repository, Schema } from "redis-om";
+import { getLogger } from "@logtape/logtape";
 import type { CacheConfig, RedisCacheConfig } from "../../Config";
 
 const NO_SOURCE_LANG = "NO_SOURCE_LANG";
+
+const logger = getLogger(["transl", "cache"]);
 
 export function getCache(config: CacheConfig): Cache {
 	if (!config) {
@@ -33,7 +36,7 @@ export class RedisCache implements Cache {
 		this.translationRepo = (async () => {
 			const client = createClient({ url: config.url });
 
-			client.on("error", error => console.error("Redis client error", { error }));
+			client.on("error", error => logger.error("Redis client error", { error }));
 			await client.connect();
 
 			const repo = new Repository(this.translationSchema, client);
@@ -45,10 +48,11 @@ export class RedisCache implements Cache {
 	}
 
 	async get({ sourceLang, targetLang, sourceText }: Get): Promise<string | undefined> {
+		const log = logger.with({ id: this.index++, sourceLang, targetLang, sourceText });
+
 		const repo = await this.translationRepo;
 
-		const index = this.index++;
-		console.debug(`[cache operation #${index}]`, "Searching cache:", { sourceLang, targetLang, sourceText });
+		log.debug("#{id} Querying cache");
 
 		try {
 			// biome-ignore format: more readable this way
@@ -59,24 +63,25 @@ export class RedisCache implements Cache {
 				.return.first();
 
 			if (result) {
-				console.debug(`[cache operation #${index}]`, "Cache hit:", { targetText: result.targetText });
+				log.debug("#{id} Cache hit", { targetText: result.targetText });
 			} else {
-				console.debug(`[cache operation #${index}]`, "Cache miss.");
+				log.debug("#{id} Cache miss");
 			}
 
 			return result?.targetText;
-		} catch (e) {
-			console.error(`[cache operation #${index}]`, "An error occurred:", e);
-			throw e;
+		} catch (error) {
+			log.error("#{id} An error occurred trying to query the cache", { error });
+			throw error;
 		}
 	}
 
 	/// by default a cached translation is valid for 30 days.
 	async set({ sourceLang, targetLang, sourceText, targetText, timeToLiveSeconds = 30 * 24 * 60 * 60 }: Set): Promise<void> {
+		const log = logger.with({ id: this.index++, sourceLang, targetLang, sourceText, targetText });
+
 		const repo = await this.translationRepo;
 
-		const index = this.index++;
-		console.debug(`[cache operation #${index}]`, "Saving to cache:", { sourceLang, targetLang, sourceText, targetText });
+		log.debug("#{id} Saving to cache");
 
 		try {
 			const entity = await repo.save({
@@ -87,22 +92,22 @@ export class RedisCache implements Cache {
 			});
 
 			if (timeToLiveSeconds) {
-				console.debug(`[cache operation #${index}]`, `Setting expiry to ${timeToLiveSeconds} seconds.`);
+				log.debug("#{id} Setting expiry to {timeToLiveSeconds} seconds", { timeToLiveSeconds });
 
 				const id = entity[EntityId];
 
 				if (id) {
 					await repo.expire(id, timeToLiveSeconds);
 				} else {
-					console.warn(`[cache operation #${index}]`, "Could not expire cache entry because ID is mysteriously missing!");
+					log.warn("#{id} Could not expire cache entry because ID is mysteriously missing!");
 				}
 			} else {
-				console.debug(`[cache operation #${index}]`, "Not setting expiry (infinity).");
+				log.debug("#{id} Not setting expiry (infinity)", { timeToLiveSeconds });
 			}
 
-			console.log(`[cache operation #${index}]`, "Saved successfully.");
-		} catch (e) {
-			console.error(`[cache operation #${index}]`, "An error occurred:", e);
+			log.debug("#{id} Saved successfully");
+		} catch (error) {
+			log.error("#{id} An error occurred", { error });
 			throw error;
 		}
 	}

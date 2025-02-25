@@ -3,6 +3,7 @@ export type Config = {
 		ui: UserInterfaceConfig;
 		translator: TranslatorConfig;
 		cache: CacheConfig;
+		logging: LoggingConfig;
 	};
 };
 
@@ -22,4 +23,10 @@ export type DeeplTranslatorConfig = {
 export type CacheConfig = { redis: RedisCacheConfig } | null;
 export type RedisCacheConfig = {
 	url: string;
+};
+
+export type LoggingConfig = { openTelemetry: OpenTelemetryLoggingConfig } | null;
+export type OpenTelemetryLoggingConfig = {
+	url: string;
+	headers?: Record<string, string>;
 };
