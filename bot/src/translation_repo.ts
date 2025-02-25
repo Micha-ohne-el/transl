@@ -1,11 +1,12 @@
 import type { SourceLanguageCode, TargetLanguageCode } from "deepl-node";
-import { Cache } from "./cache";
-import { Translator } from "./translator";
+import { type Cache, getCache } from "./cache";
+import { getTranslator, type Translator } from "./translator";
+import { environment } from "./environment";
 
 class TranslationRepo {
 	constructor(
-		private translator: Translator,
-		private cache: Cache,
+		private readonly translator: Translator,
+		private readonly cache: Cache,
 	) {}
 
 	async get({ sourceLang, targetLang, sourceText, sourceTextContext, cacheTimeToLiveSeconds }: Get): Promise<string> {
@@ -21,7 +22,7 @@ class TranslationRepo {
 	}
 }
 
-export const translationRepo = new TranslationRepo(new Translator(), new Cache());
+export const translationRepo = new TranslationRepo(getTranslator(environment.translator), getCache(environment.cache));
 
 interface Get {
 	sourceLang?: SourceLanguageCode;

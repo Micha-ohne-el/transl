@@ -1,21 +1,26 @@
 {
   "bot": {
-    "discord": {
-      "botToken": "0123456789abcdefghijklmnop.qrstuv.wxyz0123456789abcdefghijklmn-opqrstuvw",
-      "clientId": "01234567890123456789",
-      "adminIds": [
-        "01234567890123456789"
-      ],
-      "testGuildIds": [
-        "01234567890123456789"
-      ]
+    "ui": {
+      "discord": {
+        "botToken": "0123456789abcdefghijklmnop.qrstuv.wxyz0123456789abcdefghijklmn-opqrstuvw",
+        "clientId": "01234567890123456789",
+        "adminIds": [
+          "01234567890123456789"
+        ],
+        // optional:
+        "testGuildIds": [
+          "01234567890123456789"
+        ]
+      }
     },
-    "deepl": {
-      "authToken": "01234567-89ab-cdef-0123-456789abcdef"
+    "translator": {
+      "deepl": {
+        "authToken": "01234567-89ab-cdef-0123-456789abcdef"
+      }
     },
     "cache": {
       "redis": {
-        "url": "redis://abcdefg:0123"
+        "url": "redis://abcdefgh:0123"
       }
     }
   }

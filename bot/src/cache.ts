@@ -1,11 +1,49 @@
 import type { SourceLanguageCode, TargetLanguageCode } from "deepl-node";
 import { createClient } from "redis";
 import { type Entity, EntityId, Repository, Schema } from "redis-om";
-import { environment } from "./environment";
+import type { CacheConfig, RedisCacheConfig } from "../../Config";
 
 const NO_SOURCE_LANG = "NO_SOURCE_LANG";
 
-export class Cache {
+export function getCache(config: CacheConfig): Cache {
+	if (!config) {
+		return new NoOpCache();
+	}
+	if ("redis" in config && config.redis) {
+		return new RedisCache(config.redis);
+	}
+
+	throw new Error("Cache config is invalid!");
+}
+
+export interface Cache {
+	get(props: Get): Promise<string | undefined>;
+	set(props: Set): Promise<void>;
+}
+
+export class NoOpCache implements Cache {
+	async get() {
+		return undefined;
+	}
+	async set() {}
+}
+
+export class RedisCache implements Cache {
+	constructor(config: RedisCacheConfig) {
+		this.translationRepo = (async () => {
+			const client = createClient({ url: config.url });
+
+			client.on("error", error => console.error("Redis client error", { error }));
+			await client.connect();
+
+			const repo = new Repository(this.translationSchema, client);
+
+			await repo.createIndex();
+
+			return repo;
+		})();
+	}
+
 	async get({ sourceLang, targetLang, sourceText }: Get): Promise<string | undefined> {
 		const repo = await this.translationRepo;
 
@@ -65,32 +103,18 @@ export class Cache {
 			console.log(`[cache operation #${index}]`, "Saved successfully.");
 		} catch (e) {
 			console.error(`[cache operation #${index}]`, "An error occurred:", e);
+			throw error;
 		}
 	}
 
-	private connection = (async () => {
-		const client = createClient({ url: environment.cache.redis.url });
-
-		client.on("error", error => console.error("Redis client error:", error));
-		await client.connect();
-
-		return client;
-	})();
-
-	private translationSchema = new Schema<Translation>("translation", {
+	private readonly translationSchema = new Schema<Translation>("translation", {
 		sourceLang: { type: "string" },
 		targetLang: { type: "string" },
 		sourceText: { type: "string" },
 		targetText: { type: "string" },
 	});
 
-	private translationRepo = (async () => {
-		const repo = new Repository(this.translationSchema, await this.connection);
-
-		await repo.createIndex();
-
-		return repo;
-	})();
+	private readonly translationRepo: Promise<Repository<Translation>>;
 
 	private index = 1;
 }

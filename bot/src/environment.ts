@@ -1,3 +1,4 @@
-import { bot } from "../../config.json";
+import type { Config } from "../../Config.ts";
+import * as config from "../../config.json" with { type: "json" };
 
-export const environment = bot;
+export const environment = (config as Config).bot;

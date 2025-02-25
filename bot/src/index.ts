@@ -5,4 +5,4 @@ const client = new SapphireClient({
 	intents: [],
 });
 
-await client.login(environment.discord.botToken);
+await client.login(environment.ui.discord.botToken);
