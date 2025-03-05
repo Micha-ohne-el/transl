@@ -101,7 +101,7 @@ async function localize(text: string, options?: LocalizeOptions): Promise<Locali
 }
 
 async function localizeLanguageName(name: string) {
-	return await localize(name, { context: "A widely-recognized language spoken by many people around the world." });
+	return await localize(name, { context: "A spoken language." });
 }
 
 interface LocalizeOptions {
