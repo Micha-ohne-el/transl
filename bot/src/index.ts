@@ -12,7 +12,10 @@ await configureLogtape({
 		console: getConsoleSink({
 			formatter: getAnsiColorFormatter({
 				format(values) {
-					return `${values.timestamp} ${values.level} ${values.category}: ${values.message} ${inspect(values.record.properties, { depth: 1 })}`;
+					if (Object.keys(values.record.properties).length) {
+						return `${values.timestamp} ${values.level} ${values.category}: ${values.message} ${inspect(values.record.properties, { depth: 1 })}`;
+					}
+					return `${values.timestamp} ${values.level} ${values.category}: ${values.message}`;
 				},
 			}),
 		}),
