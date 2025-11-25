@@ -19,15 +19,7 @@ import { getLogger, type Logger } from "@logtape/logtape";
 const logger = getLogger(["transl", "commands", "translate"]);
 
 export class TranslateCommand extends Command {
-	public constructor(context: Command.LoaderContext, options: Command.Options) {
-		super(context, {
-			...options,
-			name: normalizeName(strings.commands.translate.name.original),
-			description: strings.commands.translate.description.original,
-		});
-	}
-
-	public override async registerApplicationCommands(registry: ApplicationCommandRegistry) {
+	override async registerApplicationCommands(registry: ApplicationCommandRegistry) {
 		registry.registerChatInputCommand(
 			builder => {
 				builder
