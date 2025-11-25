@@ -33,6 +33,11 @@ export const strings = {
 				},
 			},
 		},
+		translateForMe: {
+			name: await localize("Translate for me", {
+				context: "Instead of translating a message publicly, translate it for me, privately.",
+			}),
+		},
 	},
 	languages: {
 		arabic: await localizeLanguageName("Arabic"),
