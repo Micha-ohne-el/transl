@@ -12,21 +12,21 @@ export const strings = {
 	},
 	commands: {
 		translate: {
-			name: await localize("translate", { context: "To communicate with foreigners, I need to..." }),
+			name: await localize("Translate", { context: "To communicate with foreigners, I need to..." }),
 			description: await localize("Translate a message to the chat!"),
 			parameters: {
 				message: {
-					name: await localize("message", { context: "The message you want to translate." }),
+					name: await localize("Message", { context: "The message you want to translate." }),
 					description: await localize("The message you want to translate."),
 				},
 				sourceLang: {
-					name: await localize("source language", {
+					name: await localize("Source Language", {
 						context: "The language your original message is written in before being translated into the target language.",
 					}),
 					description: await localize("Your language (automatically detected if omitted)."),
 				},
 				targetLang: {
-					name: await localize("target language", {
+					name: await localize("Target Language", {
 						context: "The language your message (which was written in the source language) will be translated to.",
 					}),
 					description: await localize("The language you want to translate to (the Server's language if omitted)."),
