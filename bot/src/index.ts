@@ -68,6 +68,7 @@ await configureLogtape({
 const logger = getLogger(["transl"]);
 
 const client = new SapphireClient({
+	shards: "auto", // this enables “internal sharding” (see here: https://discordjs.guide/legacy/sharding#how-does-sharding-work)
 	intents: [],
 	logger: {
 		level: LogLevel.Debug,
