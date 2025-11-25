@@ -64,6 +64,10 @@ const client = new SapphireClient({
 	},
 });
 
+client.addListener("ready", async () => {
+	logger.info("Bot is ready!");
+});
+
 await client.login(environment.ui.discord.botToken);
 
-logger.info("Bot took {duration}ms until ready", { duration: Date.now() - startTime });
+logger.info("Bot took {duration}ms until login", { duration: Date.now() - startTime });
