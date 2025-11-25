@@ -12,8 +12,19 @@ await configureLogtape({
 		console: getConsoleSink({
 			formatter: getAnsiColorFormatter({
 				format(values) {
-					if (Object.keys(values.record.properties).length) {
-						return `${values.timestamp} ${values.level} ${values.category}: ${values.message} ${inspect(values.record.properties, { depth: 1 })}`;
+					let props = values.record.properties;
+					const rawMessage = typeof values.record.rawMessage === "string" ? values.record.rawMessage : "";
+
+					if (typeof values.record.rawMessage === "string") {
+						props = Object.fromEntries(Object.entries(props).filter(([key]) => !rawMessage.includes(`\{${key}\}`)));
+					}
+
+					if (Object.keys(props).length) {
+						return `${values.timestamp} ${values.level} ${values.category}: ${values.message} ${inspect(props, {
+							depth: null,
+							colors: true,
+							breakLength: Number.POSITIVE_INFINITY,
+						})}`;
 					}
 					return `${values.timestamp} ${values.level} ${values.category}: ${values.message}`;
 				},

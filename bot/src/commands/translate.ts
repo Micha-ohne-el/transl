@@ -1,4 +1,4 @@
-import { type ApplicationCommandRegistry, Command } from "@sapphire/framework";
+import { type ApplicationCommandRegistry, type ChatInputCommand, Command } from "@sapphire/framework";
 import type { LanguageCode, SourceLanguageCode, TargetLanguageCode } from "deepl-node";
 import type { ApplicationCommandOptionChoiceData } from "discord.js";
 import {
@@ -69,28 +69,28 @@ export class TranslateCommand extends Command {
 		);
 	}
 
-	public override async autocompleteRun(interaction: AutocompleteInteraction) {
+	override async autocompleteRun(interaction: AutocompleteInteraction) {
 		const log = logger.with({ id: this.autocompleteIndex++ });
 
 		const focusedOption = interaction.options.getFocused(true);
-		log.info("Providing autocomplete", { focusedOption });
+		log.info("#{id} Providing autocomplete", { focusedOption });
 
 		if (focusedOption.name === "source_language") {
 			await interaction.respond(this.findMatchingLanguages(log, this.sourceLangs, focusedOption.value));
 		} else if (focusedOption.name === "target_language") {
 			await interaction.respond(this.findMatchingLanguages(log, this.targetLangs, focusedOption.value));
 		} else {
-			log.warn("Autocomplete interaction received for option that doesn't have autocomplete", {
+			log.warn("#{id} Autocomplete interaction received for option that doesn't have autocomplete", {
 				interaction,
 				focusedOption,
 			});
 		}
 	}
 
-	public override async chatInputRun(interaction: ChatInputCommandInteraction) {
-		const log = logger.with({ id: this.runIndex++, command: "/translate" });
+	override async chatInputRun(interaction: ChatInputCommandInteraction, context: ChatInputCommand.RunContext) {
+		const log = logger.with({ id: this.runIndex++, ...context });
 
-		log.info("Executing command {command}");
+		log.info("Executing command {commandName} ({commandId})");
 		log.debug("Deferring reply");
 		const reply = await interaction.deferReply();
 
@@ -101,8 +101,10 @@ export class TranslateCommand extends Command {
 		log.info("Retreived command options", { message, sourceLang, targetLang });
 
 		try {
+			const translated = await translationRepo.get({ sourceLang, targetLang, sourceText: message });
 			log.debug("Editing reply");
-			await reply.edit(await translationRepo.get({ sourceLang, targetLang, sourceText: message }));
+			await reply.edit(translated);
+			log.info("Command successfully executed");
 		} catch (e) {
 			log.error("An error occurred – deleting reply and sending error message");
 			await Promise.all([
@@ -130,10 +132,10 @@ export class TranslateCommand extends Command {
 		languages: Partial<Record<LanguageCode, LocalizedString>>,
 		partialName: string,
 	): ApplicationCommandOptionChoiceData[] {
-		log.info("Finding matching languages for {partialName}", { partialName, languages });
+		log.info("#{id} Finding matching languages for {partialName}", { partialName });
 
 		if (partialName === "") {
-			log.debug("Skipping Fuse initialization");
+			log.debug("#{id} Skipping Fuse initialization");
 			const result: ApplicationCommandOptionChoiceData[] = [...Object.entries(languages)]
 				.slice(0, 25)
 				.map(([code, localized]) => ({
@@ -141,11 +143,11 @@ export class TranslateCommand extends Command {
 					value: code,
 					nameLocalizations: localized.getAll(),
 				}));
-			log.info("Found {count} matches", { count: result.length, result });
+			log.info("#{id} Found {count} matches", { count: result.length, result });
 			return result;
 		}
 
-		log.debug("Initializing Fuse");
+		log.debug("#{id} Initializing Fuse");
 		const fuse = new Fuse(
 			[...Object.entries(languages)].map(([code, localized]) => ({ code, localized })),
 			{
@@ -157,13 +159,13 @@ export class TranslateCommand extends Command {
 			},
 		);
 
-		log.debug("Querying Fuse");
-		const result: ApplicationCommandOptionChoiceData[] = fuse.search(partialName, { limit: 5 }).map(result => ({
+		log.debug("#{id} Querying Fuse");
+		const result: ApplicationCommandOptionChoiceData[] = fuse.search(partialName).map(result => ({
 			name: result.item.localized.original,
 			value: result.item.code,
 			nameLocalizations: result.item.localized.getAll(),
 		}));
-		log.info("Found {count} matches", { count: result.length, result });
+		log.info("#{id} Found {count} matches", { count: result.length, result });
 		return result;
 	}
 
