@@ -29,7 +29,7 @@
         "url": "https://abcdefgh:0123/v1/logs",
         // optional:
         "headers": {
-          "abcdefgh": "ijklmnop"
+          // any key-value pairs here
         }
       }
     }
