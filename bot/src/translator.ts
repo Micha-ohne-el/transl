@@ -30,7 +30,7 @@ export class DeeplTranslator implements Translator {
 	async translate({ sourceLang, targetLang, sourceText, context }: Translate): Promise<string> {
 		const log = logger.with({ id: this.index++, sourceLang, targetLang, sourceText, context });
 
-		log.debug("Attempting translation");
+		log.debug("#{id} Attempting translation");
 
 		try {
 			const result = await this.deeplClient.translateText(sourceText, sourceLang ?? null, targetLang ?? "en-US", {
@@ -39,16 +39,16 @@ export class DeeplTranslator implements Translator {
 				context,
 			});
 
-			log.info("Translation succeeded", { result });
+			log.info("#{id} Translation succeeded", { result });
 
 			return result.text;
 		} catch (error) {
 			if (error instanceof TooManyRequestsError) {
-				log.error("Too many requests against the DeepL API!", { error });
+				log.error("#{id} Too many requests against the DeepL API!", { error });
 			} else if (error instanceof QuotaExceededError) {
-				log.error("Translation quota exceeded!", { error });
+				log.error("#{id} Translation quota exceeded!", { error });
 			} else if (error instanceof DeepLError) {
-				log.error("An error occurred during translation", { error });
+				log.error("#{id} An error occurred during translation", { error });
 			}
 
 			throw error;
