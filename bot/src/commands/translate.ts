@@ -148,7 +148,13 @@ export class TranslateCommand extends Command {
 		log.debug("Initializing Fuse");
 		const fuse = new Fuse(
 			[...Object.entries(languages)].map(([code, localized]) => ({ code, localized })),
-			{ keys: ["code", Object.values(Locale).map(l => `localized.${l}`)] },
+			{
+				keys: ["code", Object.values(Locale).map(l => `localized.${l}`)],
+				shouldSort: true,
+				isCaseSensitive: false,
+				ignoreDiacritics: true,
+				findAllMatches: true,
+			},
 		);
 
 		log.debug("Querying Fuse");
