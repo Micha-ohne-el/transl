@@ -82,36 +82,36 @@ export class TranslateCommand extends Command {
 	override async chatInputRun(interaction: ChatInputCommandInteraction, context: ChatInputCommand.RunContext) {
 		const log = logger.with({ id: this.runIndex++, ...context });
 
-		log.info("Executing command {commandName} ({commandId})");
-		log.debug("Deferring reply");
+		log.info("#{id} Executing command {commandName} ({commandId})");
+		log.debug("#{id} Deferring reply");
 		const reply = await interaction.deferReply();
 
-		const message = interaction.options.getString("message", true);
+		const message = interaction.options.getString("message", /* required: */ true);
 		const sourceLang = (interaction.options.getString("source_language") as SourceLanguageCode | null) ?? undefined;
 		const targetLang = (interaction.options.getString("target_language") as TargetLanguageCode | null) ?? "en-US"; // todo: guild langs.
 
-		log.info("Retreived command options", { message, sourceLang, targetLang });
+		log.info("#{id} Retreived command options", { message, sourceLang, targetLang });
 
 		try {
 			const translated = await translationRepo.get({ sourceLang, targetLang, sourceText: message });
-			log.debug("Editing reply");
+			log.debug("#{id} Editing reply");
 			await reply.edit(translated);
-			log.info("Command successfully executed");
-		} catch (e) {
-			log.error("An error occurred – deleting reply and sending error message");
-			await Promise.all([
-				reply.delete(),
-				interaction.followUp({
-					flags: MessageFlags.Ephemeral,
-					embeds: [
-						{
-							color: 0xed4245,
-							title: strings.error.generic.title.get(interaction.locale),
-							description: strings.error.generic.description.get(interaction.locale),
-						},
-					],
-				}),
-			]);
+			log.info("#{id} Command successfully executed");
+		} catch (error) {
+			log.error("#{id} An error occurred – deleting reply and sending error message", { error });
+			await reply.delete();
+			log.debug("#{id} Reply deleted");
+			await interaction.followUp({
+				flags: MessageFlags.Ephemeral,
+				embeds: [
+					{
+						color: 0xed4245,
+						title: strings.error.generic.title.get(interaction.locale),
+						description: strings.error.generic.description.get(interaction.locale),
+					},
+				],
+			});
+			log.debug("#{id} Error message sent");
 			return;
 		}
 	}
