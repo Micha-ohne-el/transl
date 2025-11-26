@@ -68,9 +68,9 @@ export class TranslateCommand extends Command {
 		log.info("#{id} Providing autocomplete", { focusedOption });
 
 		if (focusedOption.name === "source_language") {
-			await interaction.respond(this.findMatchingLanguages(log, this.sourceLangs, focusedOption.value));
+			await interaction.respond(this.findMatchingSourceLangs(log, focusedOption.value));
 		} else if (focusedOption.name === "target_language") {
-			await interaction.respond(this.findMatchingLanguages(log, this.targetLangs, focusedOption.value));
+			await interaction.respond(this.findMatchingTargetLangs(log, focusedOption.value));
 		} else {
 			log.warn("#{id} Autocomplete interaction received for option that doesn't have autocomplete", {
 				interaction,
@@ -87,8 +87,8 @@ export class TranslateCommand extends Command {
 		const reply = await interaction.deferReply();
 
 		const message = interaction.options.getString("message", /* required: */ true);
-		const sourceLang = (interaction.options.getString("source_language") as SourceLanguageCode | null) ?? undefined;
-		const targetLang = (interaction.options.getString("target_language") as TargetLanguageCode | null) ?? "en-US"; // todo: guild langs.
+		const sourceLang = this.getSourceLangFromOption(log, interaction.options.getString("source_language"));
+		const targetLang = this.getTargetLangFromOption(log, interaction.options.getString("target_language")) ?? "en-US"; // TODO: guild langs
 
 		log.info("#{id} Retreived command options", { message, sourceLang, targetLang });
 
@@ -119,37 +119,45 @@ export class TranslateCommand extends Command {
 	private runIndex = 1;
 	private autocompleteIndex = 1;
 
-	private findMatchingLanguages(
+	private findMatchingSourceLangs(log: Logger, partialName: string): ApplicationCommandOptionChoiceData[] {
+		log.info("#{id} Finding matching source languages for {partialName}", { partialName });
+
+		const result = this.findMatchingLangs(log, this.sourceLangs, this.sourceLangFuse, partialName);
+
+		log.info("#{id} Found {count} matches", { count: result.length, result });
+
+		return result.slice(0, 25);
+	}
+
+	private findMatchingTargetLangs(log: Logger, partialName: string): ApplicationCommandOptionChoiceData[] {
+		log.info("#{id} Finding matching target languages for {partialName}", { partialName });
+
+		const result = this.findMatchingLangs(log, this.targetLangs, this.targetLangFuse, partialName);
+
+		log.info("#{id} Found {count} matches", { count: result.length, result });
+
+		return result.slice(0, 25);
+	}
+
+	private findMatchingLangs(
 		log: Logger,
-		languages: Partial<Record<LanguageCode, LocalizedString>>,
+		langs: Map<LanguageCode, LocalizedString>,
+		fuse: Fuse<{ code: LanguageCode; localized: LocalizedString }>,
 		partialName: string,
 	): ApplicationCommandOptionChoiceData[] {
-		log.info("#{id} Finding matching languages for {partialName}", { partialName });
-
 		if (partialName === "") {
-			log.debug("#{id} Skipping Fuse initialization");
-			const result: ApplicationCommandOptionChoiceData[] = [...Object.entries(languages)]
-				.slice(0, 25)
+			log.debug("#{id} Skipping Fuse search");
+			const result: ApplicationCommandOptionChoiceData[] = langs
+				.entries()
 				.map(([code, localized]) => ({
 					name: localized.original,
 					value: code,
 					nameLocalizations: localized.getAll(),
-				}));
-			log.info("#{id} Found {count} matches", { count: result.length, result });
+				}))
+				.toArray();
+			log.info("#{id} Returning all langs", { count: result.length, total: langs.size });
 			return result;
 		}
-
-		log.debug("#{id} Initializing Fuse");
-		const fuse = new Fuse(
-			[...Object.entries(languages)].map(([code, localized]) => ({ code, localized })),
-			{
-				keys: ["code", Object.values(Locale).map(l => `localized.${l}`)],
-				shouldSort: true,
-				isCaseSensitive: false,
-				ignoreDiacritics: true,
-				findAllMatches: true,
-			},
-		);
 
 		log.debug("#{id} Querying Fuse");
 		const result: ApplicationCommandOptionChoiceData[] = fuse.search(partialName).map(result => ({
@@ -157,75 +165,150 @@ export class TranslateCommand extends Command {
 			value: result.item.code,
 			nameLocalizations: result.item.localized.getAll(),
 		}));
-		log.info("#{id} Found {count} matches", { count: result.length, result });
 		return result;
 	}
 
-	private sourceLangs: Record<SourceLanguageCode, LocalizedString> = {
-		ar: strings.languages.arabic,
-		bg: strings.languages.bulgarian,
-		cs: strings.languages.czeck,
-		da: strings.languages.danish,
-		de: strings.languages.german,
-		el: strings.languages.greek,
-		en: strings.languages.english.generic,
-		es: strings.languages.spanish,
-		et: strings.languages.estonian,
-		fi: strings.languages.finnish,
-		fr: strings.languages.french,
-		hu: strings.languages.hungarian,
-		id: strings.languages.indonesian,
-		it: strings.languages.italian,
-		ja: strings.languages.japanese,
-		ko: strings.languages.korean,
-		lt: strings.languages.lithuanian,
-		lv: strings.languages.latvian,
-		nb: strings.languages.norwegian,
-		nl: strings.languages.dutch,
-		pl: strings.languages.polish,
-		pt: strings.languages.portuguese.generic,
-		ro: strings.languages.romanian,
-		ru: strings.languages.russian,
-		sk: strings.languages.slovak,
-		sl: strings.languages.slovenian,
-		sv: strings.languages.swedish,
-		tr: strings.languages.turkish,
-		uk: strings.languages.ukranian,
-		zh: strings.languages.chinese.generic,
-	};
+	private getSourceLangFromOption(logger: Logger, option: string | null): SourceLanguageCode | undefined {
+		const log = logger.with({ option });
 
-	private targetLangs: Record<TargetLanguageCode, LocalizedString> = {
-		ar: strings.languages.arabic,
-		bg: strings.languages.bulgarian,
-		cs: strings.languages.czeck,
-		da: strings.languages.danish,
-		de: strings.languages.german,
-		el: strings.languages.greek,
-		"en-GB": strings.languages.english.british,
-		"en-US": strings.languages.english.american,
-		es: strings.languages.spanish,
-		et: strings.languages.estonian,
-		fi: strings.languages.finnish,
-		fr: strings.languages.french,
-		hu: strings.languages.hungarian,
-		id: strings.languages.indonesian,
-		it: strings.languages.italian,
-		ja: strings.languages.japanese,
-		ko: strings.languages.korean,
-		lt: strings.languages.lithuanian,
-		lv: strings.languages.latvian,
-		nb: strings.languages.norwegian,
-		nl: strings.languages.dutch,
-		pl: strings.languages.polish,
-		"pt-BR": strings.languages.portuguese.brazilian,
-		"pt-PT": strings.languages.portuguese.generic,
-		ro: strings.languages.romanian,
-		ru: strings.languages.russian,
-		sk: strings.languages.slovak,
-		sl: strings.languages.slovenian,
-		sv: strings.languages.swedish,
-		tr: strings.languages.turkish,
-		uk: strings.languages.ukranian,
-		zh: strings.languages.chinese.generic,
-	};
+		log.debug("#{id} Converting option to source lang");
+
+		if (!option) {
+			log.debug("#{id} Option was blank, returning undefined");
+			return undefined;
+		}
+
+		if (this.sourceLangs.has(option as SourceLanguageCode)) {
+			log.debug("#{id} Option is a SourceLanguageCode");
+
+			return option as SourceLanguageCode;
+		}
+
+		log.debug("Querying Fuse");
+		const result = this.sourceLangFuse.search(option);
+		log.debug("Found {count} matches", { count: result.length, result });
+		if (result.length === 0) return undefined;
+
+		return result[0].item.code;
+	}
+
+	private getTargetLangFromOption(logger: Logger, option: string | null): TargetLanguageCode | undefined {
+		const log = logger.with({ option });
+
+		log.debug("#{id} Converting option to target lang");
+
+		if (!option) {
+			log.debug("#{id} Option was blank, returning undefined");
+			return undefined;
+		}
+
+		if (this.targetLangs.has(option as TargetLanguageCode)) {
+			log.debug("#{id} Option is a TargetLanguageCode");
+
+			return option as TargetLanguageCode;
+		}
+
+		log.debug("Querying Fuse");
+		const result = this.targetLangFuse.search(option);
+		log.debug("Found {count} matches", { count: result.length, result });
+		if (result.length === 0) return undefined;
+
+		return result[0].item.code;
+	}
+
+	private sourceLangs = new Map<SourceLanguageCode, LocalizedString>([
+		["ar", strings.languages.arabic],
+		["bg", strings.languages.bulgarian],
+		["cs", strings.languages.czeck],
+		["da", strings.languages.danish],
+		["de", strings.languages.german],
+		["el", strings.languages.greek],
+		["en", strings.languages.english.generic],
+		["es", strings.languages.spanish],
+		["et", strings.languages.estonian],
+		["fi", strings.languages.finnish],
+		["fr", strings.languages.french],
+		["hu", strings.languages.hungarian],
+		["id", strings.languages.indonesian],
+		["it", strings.languages.italian],
+		["ja", strings.languages.japanese],
+		["ko", strings.languages.korean],
+		["lt", strings.languages.lithuanian],
+		["lv", strings.languages.latvian],
+		["nb", strings.languages.norwegian],
+		["nl", strings.languages.dutch],
+		["pl", strings.languages.polish],
+		["pt", strings.languages.portuguese.generic],
+		["ro", strings.languages.romanian],
+		["ru", strings.languages.russian],
+		["sk", strings.languages.slovak],
+		["sl", strings.languages.slovenian],
+		["sv", strings.languages.swedish],
+		["tr", strings.languages.turkish],
+		["uk", strings.languages.ukranian],
+		["zh", strings.languages.chinese.generic],
+	]);
+	private sourceLangFuse = new Fuse(
+		this.sourceLangs
+			.entries()
+			// We convert the LocalizedString to an object so that Fuse can traverse it but keep the map for all other uses.
+			.map(([code, localized]) => ({ code, localized, obj: localized.getAll() }))
+			.toArray(),
+		{
+			keys: ["code", ...Object.values(Locale).map(l => `obj.${l}`)],
+			shouldSort: true,
+			isCaseSensitive: false,
+			ignoreDiacritics: true,
+			threshold: 0.2,
+		},
+	);
+
+	private targetLangs = new Map<TargetLanguageCode, LocalizedString>([
+		["ar", strings.languages.arabic],
+		["bg", strings.languages.bulgarian],
+		["cs", strings.languages.czeck],
+		["da", strings.languages.danish],
+		["de", strings.languages.german],
+		["el", strings.languages.greek],
+		["en-GB", strings.languages.english.british],
+		["en-US", strings.languages.english.american],
+		["es", strings.languages.spanish],
+		["et", strings.languages.estonian],
+		["fi", strings.languages.finnish],
+		["fr", strings.languages.french],
+		["hu", strings.languages.hungarian],
+		["id", strings.languages.indonesian],
+		["it", strings.languages.italian],
+		["ja", strings.languages.japanese],
+		["ko", strings.languages.korean],
+		["lt", strings.languages.lithuanian],
+		["lv", strings.languages.latvian],
+		["nb", strings.languages.norwegian],
+		["nl", strings.languages.dutch],
+		["pl", strings.languages.polish],
+		["pt-BR", strings.languages.portuguese.brazilian],
+		["pt-PT", strings.languages.portuguese.generic],
+		["ro", strings.languages.romanian],
+		["ru", strings.languages.russian],
+		["sk", strings.languages.slovak],
+		["sl", strings.languages.slovenian],
+		["sv", strings.languages.swedish],
+		["tr", strings.languages.turkish],
+		["uk", strings.languages.ukranian],
+		["zh", strings.languages.chinese.generic],
+	]);
+	private targetLangFuse = new Fuse(
+		this.targetLangs
+			.entries()
+			// We convert the LocalizedString to an object so that Fuse can traverse it but keep the map for all other uses.
+			.map(([code, localized]) => ({ code, localized, obj: localized.getAll() }))
+			.toArray(),
+		{
+			keys: ["code", ...Object.values(Locale).map(l => `obj.${l}`)],
+			shouldSort: true,
+			isCaseSensitive: false,
+			ignoreDiacritics: true,
+			threshold: 0.2,
+		},
+	);
 }
