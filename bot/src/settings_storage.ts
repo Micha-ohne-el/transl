@@ -39,6 +39,8 @@ export class SqliteSettingsStorage implements SettingsStorage {
 	}
 
 	async setGuildLang(guildId: Snowflake, lang: TargetLanguageCode): Promise<void> {
+		logger.debug("Setting guild lang for guild {guildId} to {lang}", { guildId, lang });
+
 		const query = this.db.query<void, { guildId: Snowflake; lang: TargetLanguageCode }>(
 			"INSERT OR REPLACE INTO guildLang (guildId, lang) VALUES ($guildId, $lang)",
 		);

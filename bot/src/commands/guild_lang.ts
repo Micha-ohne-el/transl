@@ -96,7 +96,7 @@ export class GuildLangCommand extends Command {
 			log.debug("Guild lang: {guildLang}", { guildLang });
 
 			// TODO: translate this to guildLang:
-			reply.edit({
+			await reply.edit({
 				embeds: [
 					{
 						color: 0x5865f2,
@@ -111,7 +111,7 @@ export class GuildLangCommand extends Command {
 			await settingsStorage.setGuildLang(interaction.guildId, guildLang);
 
 			// TODO: translate this to guildLang:
-			reply.edit({
+			await reply.edit({
 				embeds: [
 					{
 						color: 0x5865f2,
