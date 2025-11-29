@@ -15,6 +15,7 @@ import { translationRepo } from "../translation_repo";
 import type { LocalizedString } from "../utils/localized_string";
 import { normalizeName } from "../utils/normalize_name";
 import { getLogger, type Logger } from "@logtape/logtape";
+import { settingsStorage } from "../settings_storage";
 
 const logger = getLogger(["transl", "commands", "translate"]);
 
@@ -88,7 +89,16 @@ export class TranslateCommand extends Command {
 
 		const message = interaction.options.getString("message", /* required: */ true);
 		const sourceLang = this.getSourceLangFromOption(log, interaction.options.getString("source_language"));
-		const targetLang = this.getTargetLangFromOption(log, interaction.options.getString("target_language")) ?? "en-US"; // TODO: guild langs
+		let targetLang = this.getTargetLangFromOption(log, interaction.options.getString("target_language"));
+
+		if (!targetLang && interaction.guildId) {
+			targetLang = await settingsStorage.getGuildLang(interaction.guildId);
+		}
+
+		if (!targetLang) {
+			targetLang = "en-GB";
+			log.debug("Falling back to {targetLang} as a target language", { targetLang });
+		}
 
 		log.info("#{id} Retreived command options", { message, sourceLang, targetLang });
 

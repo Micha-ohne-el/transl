@@ -23,6 +23,11 @@
         "url": "redis://abcdefgh:0123"
       }
     },
+    "settingsStorage": {
+      "sqlite": {
+        "path": "path/to/database.sqlite"
+      }
+    },
     // optional:
     "logging": {
       "openTelemetry": {

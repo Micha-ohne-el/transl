@@ -38,6 +38,36 @@ export const strings = {
 				context: "Instead of translating a message publicly, translate it for me, privately.",
 			}),
 		},
+		guildLang: {
+			name: await localize("Language", { context: "The language to translate to" }),
+			description: await localize("Get or set this Server's preferred language."),
+			subcommands: {
+				get: {
+					name: await localize("Get", { context: "Get/retrieve/display the preferred language" }),
+					description: await localize("Get this Server's preferred language."),
+					success: {
+						title: await localize("Current Server language", {
+							context: "The currently-selected preferred language of this Server",
+						}),
+					},
+				},
+				set: {
+					name: await localize("Set", { context: "Set/choose the preferred language" }),
+					description: await localize("Set this Server's preferred language."),
+					parameters: {
+						language: {
+							name: await localize("Language", { context: "The language to use" }),
+							description: await localize("This Server's new language (omit to clear)."),
+						},
+					},
+					success: {
+						title: await localize("Server language changed", {
+							context: "The preferred language of this Server has been updated",
+						}),
+					},
+				},
+			},
+		},
 	},
 	languages: {
 		arabic: await localizeLanguageName("Arabic"),
